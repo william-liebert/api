@@ -3,7 +3,7 @@ WORKDIR /app
 
 COPY ./NuGet.config ./NuGet.config
 COPY ./WTech.API.sln ./WTech.API.sln
-COPY ./src/WTech.API/WTech.API.csproj ./WTech.API/WTech.API.csproj
+COPY ./src/WTech.API/WTech.API.csproj ./src/WTech.API/WTech.API.csproj
 COPY ./Directory.Packages.props ./Directory.Packages.props
 RUN dotnet restore
 
