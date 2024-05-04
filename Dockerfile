@@ -1,9 +1,14 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS sdk
 WORKDIR /app
 
-COPY . .
+COPY ./NuGet.config ./NuGet.config
+COPY ./WTech.API.sln ./WTech.API.sln
+COPY ./src/WTech.API/WTech.API.csproj ./WTech.API/WTech.API.csproj
+COPY ./Directory.Packages.props ./Directory.Packages.props
 RUN dotnet restore
-RUN dotnet publish -c Release -o out
+
+COPY . .
+RUN dotnet build -c Release -o /app/out --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
