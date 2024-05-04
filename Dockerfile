@@ -1,11 +1,11 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS sdk
 WORKDIR /app
 
-COPY /app/NuGet.config /app/NuGet.config
-COPY /app/WTech.API.sln /app/WTech.API.sln
-COPY /app/src/WTech.API/WTech.API.csproj /app/src/WTech.API/WTech.API.csproj
-COPY /app/src/WTech.API/packages.lock.json /app/src/WTech.API/packages.lock.json
-COPY /app/Directory.Packages.props /app/Directory.Packages.props
+COPY ./NuGet.config ./NuGet.config
+COPY ./WTech.API.sln ./WTech.API.sln
+COPY ./src/WTech.API/WTech.API.csproj ./src/WTech.API/WTech.API.csproj
+COPY ./src/WTech.API/packages.lock.json ./src/WTech.API/packages.lock.json
+COPY ./Directory.Packages.props ./Directory.Packages.props
 RUN dotnet restore --locked-mode
 
 COPY . .
