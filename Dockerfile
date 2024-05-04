@@ -9,7 +9,7 @@ COPY ./Directory.Packages.props ./Directory.Packages.props
 RUN dotnet restore --locked-mode
 
 COPY . .
-RUN dotnet build -c Release -o /app/out --no-restore
+RUN dotnet publish -c Release -o /app/out --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
