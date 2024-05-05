@@ -6,7 +6,7 @@ services:
     develop:
       watch:
         - action: sync+restart
-          path: ./src/**/bin/**/net8.0/
+          path: ./src/WTech.API/bin/Debug/net8.0/
           target: /app
       environment:
         - ASPNET_ENVIRONMENT=dev
