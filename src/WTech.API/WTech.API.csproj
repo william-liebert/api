@@ -12,4 +12,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="appsettings.*.json" CopyToPublishDirectory="Always" />
+  </ItemGroup>
+
 </Project>
