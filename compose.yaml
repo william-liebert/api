@@ -8,5 +8,5 @@ services:
         - action: sync+restart
           path: ./src/WTech.API/bin/Debug/net8.0/
           target: /app
-      environment:
-        - ASPNET_ENVIRONMENT=dev
+    environment:
+      - ASPNET_ENVIRONMENT=Development
