@@ -4,9 +4,9 @@
     "net8.0": {
       "Microsoft.AspNetCore.OpenApi": {
         "type": "Direct",
-        "requested": "[8.0.26, )",
-        "resolved": "8.0.26",
-        "contentHash": "7fGW6HIjDkISnHZoLoo7m9EOA1G1MLgxX+PBSaQa92Gq4wulbhw292J7aRK1BXI282ICaYg5sBoC+shKf7tcLg==",
+        "requested": "[8.0.27, )",
+        "resolved": "8.0.27",
+        "contentHash": "lbjwtlQ1ICGKp3UyhoF9i4APpzX01CqtY8vVba2vL32Nm3v5ir9/FJ0PHXfxgsO5sr1Bb4KkCOH7FSauEHUgRQ==",
         "dependencies": {
           "Microsoft.OpenApi": "1.4.3"
         }
