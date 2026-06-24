@@ -10,9 +10,3 @@ services:
       - "8080:8080"
     environment:
       - ASPNET_ENVIRONMENT=Development
-    networks:
-      - api-network
-
-networks:
-  api-network:
-    driver: bridge
