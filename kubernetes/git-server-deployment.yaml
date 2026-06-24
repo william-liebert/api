@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: git-server
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: git-server
+  template:
+    metadata:
+      labels:
+        app: git-server
+    spec:
+      containers:
+      - name: git-server
+        image: alpine/git:latest
+        ports:
+        - containerPort: 9418
+        - containerPort: 22
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          apk add --no-cache openssh-server;
+          mkdir -p /var/run/sshd;
+          ssh-keygen -A;
+          sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config;
+          sed -i 's/UsePAM yes/UsePAM no/' /etc/ssh/sshd_config;
+          echo "root:password" | chpasswd;
+          /usr/sbin/sshd;
+          git daemon --export-all --reuseaddr --base-path=/git /git;
+          sleep infinity
+        volumeMounts:
+        - name: git-data
+          mountPath: /git
+      volumes:
+      - name: git-data
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: git-server-service
+  namespace: default
+spec:
+  selector:
+    app: git-server
+  ports:
+  - name: git-daemon
+    port: 9418
+    targetPort: 9418
+  - name: ssh
+    port: 22
+    targetPort: 22
+  type: ClusterIP
