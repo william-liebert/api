@@ -3,12 +3,17 @@
 set -e
 
 if ! command -v kubectl &> /dev/null; then
-    echo "Error: kubectl is not installed or not in PATH."
+    echo "Error: Kubernetes CLI (kubectl) is not installed or not in PATH."
     exit 1
 fi
 
 if ! command -v minikube &> /dev/null; then
-    echo "Error: Minikube is not installed or not in PATH."
+    echo "Error: Minikube (minikube) is not installed or not in PATH."
+    exit 1
+fi
+
+if ! command -v argocd &> /dev/null; then
+    echo "Error: ArgoCD CLI (argocd) is not installed or not in PATH."
     exit 1
 fi
 
@@ -45,7 +50,10 @@ if ! git remote get-url minikube-git &> /dev/null; then
 fi
 git push minikube-git --all
 
+echo "Syncing Deployments..."
+argocd app sync wtech-api || true
+
 ARGOCD_URL=$(minikube service argocd-server -n argocd --url)
-echo "Deployed successfully!"
-echo "ArgoCD URL: $ARGOCD_URL"
-echo "Git Remote: $GIT_REMOTE"
+echo "Done."
+echo "ArgoCD URL: [$ARGOCD_URL]"
+echo "Git Remote: [$GIT_REMOTE]"
