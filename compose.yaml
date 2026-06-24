@@ -1,12 +1,18 @@
+version: '3.8'
+
 services:
-  web:
-    build: .
+  web-api:
+    build:
+      context: .
+      dockerfile: ./src/WTech.API/Dockerfile
+    container_name: web-api-local
     ports:
-      - "8001:8080"
-    develop:
-      watch:
-        - action: sync+restart
-          path: ./src/WTech.API/bin/Debug/net8.0/
-          target: /app
+      - "8080:8080"
     environment:
       - ASPNET_ENVIRONMENT=Development
+    networks:
+      - api-network
+
+networks:
+  api-network:
+    driver: bridge

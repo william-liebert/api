@@ -1,16 +1,19 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS sdk
+# Use the official .NET SDK image as base
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
-COPY ./NuGet.config ./NuGet.config
-COPY ./WTech.API.sln ./WTech.API.sln
-COPY ./src/WTech.API/WTech.API.csproj ./src/WTech.API/WTech.API.csproj
-COPY ./src/WTech.API/packages.lock.json ./src/WTech.API/packages.lock.json
-COPY ./Directory.Packages.props ./Directory.Packages.props
-RUN dotnet restore --locked-mode --verbosity normal
-COPY . .
-RUN dotnet publish --configuration Release --verbosity normal
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
-ENV ASPNET__ENVIRONMENT=prod
+# Copy csproj and restore as distinct layers
+COPY *.sln .
+COPY src/WTech.API/*.csproj ./src/WTech.API/
+RUN dotnet restore
+
+# Copy everything else and build
+COPY . .
+WORKDIR /app/src/WTech.API
+RUN dotnet publish -c Release -o out
+
+# Use the official .NET runtime image for final stage
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-COPY --from=sdk /app/src/WTech.API/bin/Release/net8.0/publish/ .
+COPY --from=build /app/src/WTech.API/out .
 ENTRYPOINT ["dotnet", "WTech.API.dll"]
