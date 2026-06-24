@@ -40,7 +40,7 @@ if ! kubectl get deployment git-server -n argocd &> /dev/null; then
 fi
 
 echo "Building Docker images..."
-docker build -t wtech-API:latest -f src/WTech.API/Dockerfile src/WTech.API
+docker build -t wtech-api:latest -f src/WTech.API/Dockerfile .
 
 echo "Pushing Git Branch..."
 GIT_SERVER_IP=$(kubectl get service git-server-service -o jsonpath='{.spec.clusterIP}')
