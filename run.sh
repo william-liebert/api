@@ -48,7 +48,7 @@ echo "Building Docker images..."
 docker build -t wtech-api:latest -f src/WTech.API/Dockerfile .
 
 echo "Pushing Git Branch..."
-GIT_SERVER_IP=$(kubectl get service git-server-service -o jsonpath='{.spec.clusterIP}')
+GIT_SERVER_IP=$(kubectl get service git-server-service -n argocd -o jsonpath='{.spec.clusterIP}')
 GIT_REMOTE="git://$GIT_SERVER_IP:9418/git"
 if ! git remote get-url minikube-git &> /dev/null; then
     git remote add minikube-git "$GIT_REMOTE"
