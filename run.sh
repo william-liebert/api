@@ -34,26 +34,13 @@ if ! command -v helm &> /dev/null; then
     curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 fi
 
-if ! kubectl get namespace argocd &> /dev/null; then
-    echo "Creating ArgoCD namespace..."
-    kubectl create namespace argocd
-fi
-
-if ! kubectl get deployment argocd-server -n argocd &> /dev/null; then
-    echo "Installing ArgoCD..."
-    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-    kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=argocd-server -n argocd --timeout=300s
-fi
-
+helm repo add argo https://argoproj.github.io/argo-helm
+helm upgrade --install argo-cd argo/argo-cd
 ARGOCD_URL="$MINIKUBE_IP:30080"
 echo "ArgoCD URL: [$ARGOCD_URL]"
 
-if ! kubectl get deployment git-server -n argocd &> /dev/null; then
-    echo "Installing Git Server..."
-    kubectl apply -n argocd -f kubernetes/git-server-deployment.yaml
-    kubectl wait --for=condition=ready pod -l app=git-server -n argocd --timeout=300s
-fi
-
+helm repo add gitea-charts https://dl.gitea.com/charts/
+helm upgrade --install gitea gitea-charts/gitea
 GIT_REMOTE="git://$MINIKUBE_IP:9418/git"
 echo "Git Remote: [$GIT_REMOTE]"
 
