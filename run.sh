@@ -38,18 +38,23 @@ if ! kubectl get deployment argocd-server -n argocd &> /dev/null; then
     kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=argocd-server -n argocd --timeout=300s
 fi
 
+ARGOCD_URL=$(minikube service argocd-server -n argocd --url)
+echo "ArgoCD URL: [$ARGOCD_URL]"
+
 if ! kubectl get deployment git-server -n argocd &> /dev/null; then
     echo "Installing Git Server..."
     kubectl apply -n argocd -f kubernetes/git-server-deployment.yaml
     kubectl wait --for=condition=ready pod -l app=git-server -n argocd --timeout=300s
 fi
 
+GIT_SERVER_IP=$(kubectl get service git-server-service -n argocd -o jsonpath='{.spec.clusterIP}')
+GIT_REMOTE="git://$GIT_SERVER_IP:9418/git"
+echo "Git Remote: [$GIT_REMOTE]"
+
 echo "Building Docker images..."
 docker build -t wtech-api:latest -f src/WTech.API/Dockerfile .
 
 echo "Pushing Git Branch..."
-GIT_SERVER_IP=$(kubectl get service git-server-service -n argocd -o jsonpath='{.spec.clusterIP}')
-GIT_REMOTE="git://$GIT_SERVER_IP:9418/git"
 if ! git remote get-url minikube-git &> /dev/null; then
     git remote add minikube-git "$GIT_REMOTE"
 fi
@@ -58,7 +63,4 @@ git push minikube-git --all
 echo "Syncing Deployments..."
 argocd app sync wtech-api || true
 
-ARGOCD_URL=$(minikube service argocd-server -n argocd --url)
 echo "Done."
-echo "ArgoCD URL: [$ARGOCD_URL]"
-echo "Git Remote: [$GIT_REMOTE]"
