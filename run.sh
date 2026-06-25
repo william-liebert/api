@@ -27,6 +27,8 @@ if ! minikube status | grep -q "Running"; then
     minikube start --driver=docker
 fi
 
+MINIKUBE_IP=$(minikube ip)
+
 if ! kubectl get namespace argocd &> /dev/null; then
     echo "Creating ArgoCD namespace..."
     kubectl create namespace argocd
@@ -38,7 +40,7 @@ if ! kubectl get deployment argocd-server -n argocd &> /dev/null; then
     kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=argocd-server -n argocd --timeout=300s
 fi
 
-ARGOCD_URL=$(minikube service argocd-server -n argocd --url)
+ARGOCD_URL="$MINIKUBE_IP:30080"
 echo "ArgoCD URL: [$ARGOCD_URL]"
 
 if ! kubectl get deployment git-server -n argocd &> /dev/null; then
@@ -47,8 +49,7 @@ if ! kubectl get deployment git-server -n argocd &> /dev/null; then
     kubectl wait --for=condition=ready pod -l app=git-server -n argocd --timeout=300s
 fi
 
-GIT_SERVER_IP=$(kubectl get service git-server-service -n argocd -o jsonpath='{.spec.clusterIP}')
-GIT_REMOTE="git://$GIT_SERVER_IP:9418/git"
+GIT_REMOTE="git://$MINIKUBE_IP:9418/git"
 echo "Git Remote: [$GIT_REMOTE]"
 
 echo "Building Docker images..."
