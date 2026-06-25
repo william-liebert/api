@@ -10,10 +10,6 @@ MINIKUBE_IP=$(minikube ip)
 echo "Installing Helm..."
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
-echo "Installing Kubernetes Dashboard via Helm..."
-helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
-helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard
-
 echo "Installing ArgoCD via Helm..."
 helm repo add argo https://argoproj.github.io/argo-helm
 helm upgrade --install argo-cd argo/argo-cd
