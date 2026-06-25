@@ -10,6 +10,10 @@ MINIKUBE_IP=$(minikube ip)
 echo "Installing Helm..."
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
+echo "Installing Kubernetes Dashboard via Helm..."
+helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
+helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard
+
 echo "Installing ArgoCD via Helm..."
 helm repo add argo https://argoproj.github.io/argo-helm
 helm upgrade --install argo-cd argo/argo-cd
@@ -19,8 +23,16 @@ echo "ArgoCD URL: [$ARGOCD_URL]"
 echo "Installing Gitea via Helm..."
 helm repo add gitea-charts https://dl.gitea.com/charts/
 helm upgrade --install gitea gitea-charts/gitea
-GIT_REMOTE="git://$MINIKUBE_IP:9418/git"
+GIT_REMOTE="git://$MINIKUBE_IP:3000/wtech-api.git"
 echo "Git Remote: [$GIT_REMOTE]"
+
+echo "Installing Prometheus via Helm..."
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm upgrade --install prometheus prometheus-community/kube-prometheus-stack
+
+echo "Installing Grafana via Helm..."
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm upgrade --install grafana prometheus-community/grafana
 
 echo "Building Docker images..."
 docker build -t wtech-api:latest -f src/WTech.API/Dockerfile .
