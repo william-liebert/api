@@ -23,25 +23,25 @@ helm repo add gitea-charts https://dl.gitea.com/charts/
 helm upgrade --install gitea gitea-charts/gitea
 
 echo "Exposing Gitea on port 3000..."
-kubectl port-forward deployment/gitea 3000:3000 || true &
+kubectl port-forward svc/gitea-http 3000:3000 || true &
 
 echo "Installing Prometheus Stack via Helm..."
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm upgrade --install prometheus prometheus-community/kube-prometheus-stack
 
-echo "Exposing Grafana on port 8080..."
-kubectl port-forward deployment/prometheus-grafana 8080:80 || true &
+echo "Exposing Grafana on port 3002..."
+kubectl port-forward svc/prometheus-grafana 3002:80 -n default > /dev/null 2>&1 &
 
 echo "Building Docker images..."
 for dir in src/* ; do
     if [ -d "$dir" ]; then
         project_name=$(basename "$dir" | tr '[:upper:]' '[:lower:]' | tr -cd '[:alnum:]-')
-        docker build -t "$project_name:latest" -f "$dir/Dockerfile" .
+        # docker build -t "$project_name:latest" -f "$dir/Dockerfile" .
     fi
 done
 
 echo "Pushing Git Branch..."
-MINIKUBE_GIT_URL="git://localhost:3000/git/wtech/wtech-api.git"
+MINIKUBE_GIT_URL="https://127.0.0.1:3000"
 git remote add minikube-git "$MINIKUBE_GIT_URL" || git remote set-url minikube-git "$MINIKUBE_GIT_URL"
 git push minikube-git --all
 
