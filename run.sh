@@ -1,26 +1,6 @@
 #!/bin/bash
 
-set -e
-
-if ! command -v kubectl &> /dev/null; then
-    echo "Error: Kubernetes CLI (kubectl) is not installed or not in PATH."
-    exit 1
-fi
-
-if ! command -v minikube &> /dev/null; then
-    echo "Error: Minikube (minikube) is not installed or not in PATH."
-    exit 1
-fi
-
-if ! command -v argocd &> /dev/null; then
-    echo "Error: ArgoCD CLI (argocd) is not installed or not in PATH."
-    exit 1
-fi
-
-if ! command -v docker &> /dev/null; then
-    echo "Error: Docker CLI (docker) is not installed or not in PATH."
-    exit 1
-fi
+set -ex
 
 echo "Starting Minikube..."
 minikube start --driver=docker
