@@ -17,6 +17,11 @@ if ! command -v argocd &> /dev/null; then
     exit 1
 fi
 
+if ! command -v docker &> /dev/null; then
+    echo "Error: Docker CLI (docker) is not installed or not in PATH."
+    exit 1
+fi
+
 if ! minikube status | grep -q "Running"; then
     echo "Starting Minikube..."
     minikube start --driver=docker
