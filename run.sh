@@ -2,10 +2,11 @@
 
 set -ex
 
+trap 'kill $(jobs -p) 2>/dev/null' EXIT
+
 if ! minikube status > /dev/null 2>&1; then
     minikube start --driver=docker
 fi
-MINIKUBE_IP=$(minikube ip)
 
 echo "Installing Helm..."
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
@@ -13,18 +14,23 @@ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 echo "Installing ArgoCD via Helm..."
 helm repo add argo https://argoproj.github.io/argo-helm
 helm upgrade --install argo-cd argo/argo-cd
-ARGOCD_URL="$MINIKUBE_IP:30080"
-echo "ArgoCD URL: [$ARGOCD_URL]"
+
+echo "Exposing ArgoCD on port 8081..."
+kubectl port-forward deployment/argo-cd-server 8081:8080 || true &
 
 echo "Installing Gitea via Helm..."
 helm repo add gitea-charts https://dl.gitea.com/charts/
 helm upgrade --install gitea gitea-charts/gitea
-GIT_REMOTE="git://$MINIKUBE_IP:3000/wtech-api.git"
-echo "Git Remote: [$GIT_REMOTE]"
+
+echo "Exposing Gitea on port 3000..."
+kubectl port-forward deployment/gitea 3000:3000 || true &
 
 echo "Installing Prometheus Stack via Helm..."
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm upgrade --install prometheus prometheus-community/kube-prometheus-stack
+
+echo "Exposing Grafana on port 8080..."
+kubectl port-forward deployment/prometheus-grafana 8080:80 || true &
 
 echo "Building Docker images..."
 for dir in src/* ; do
@@ -35,9 +41,8 @@ for dir in src/* ; do
 done
 
 echo "Pushing Git Branch..."
-if ! git remote get-url minikube-git &> /dev/null; then
-    git remote add minikube-git "$GIT_REMOTE"
-fi
+MINIKUBE_GIT_URL="git://localhost:3000/git/wtech/wtech-api.git"
+git remote add minikube-git "$MINIKUBE_GIT_URL" || git remote set-url minikube-git "$MINIKUBE_GIT_URL"
 git push minikube-git --all
 
 echo "Syncing Deployments..."
