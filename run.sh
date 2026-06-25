@@ -29,6 +29,11 @@ fi
 
 MINIKUBE_IP=$(minikube ip)
 
+if ! command -v helm &> /dev/null; then
+    echo "Installing Helm..."
+    curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+fi
+
 if ! kubectl get namespace argocd &> /dev/null; then
     echo "Creating ArgoCD namespace..."
     kubectl create namespace argocd
