@@ -22,23 +22,20 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
-if ! minikube status | grep -q "Running"; then
-    echo "Starting Minikube..."
-    minikube start --driver=docker
-fi
-
+echo "Starting Minikube..."
+minikube start --driver=docker
 MINIKUBE_IP=$(minikube ip)
 
-if ! command -v helm &> /dev/null; then
-    echo "Installing Helm..."
-    curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-fi
+echo "Installing Helm..."
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
+echo "Installing ArgoCD via Helm..."
 helm repo add argo https://argoproj.github.io/argo-helm
 helm upgrade --install argo-cd argo/argo-cd
 ARGOCD_URL="$MINIKUBE_IP:30080"
 echo "ArgoCD URL: [$ARGOCD_URL]"
 
+echo "Installing Gitea via Helm..."
 helm repo add gitea-charts https://dl.gitea.com/charts/
 helm upgrade --install gitea gitea-charts/gitea
 GIT_REMOTE="git://$MINIKUBE_IP:9418/git"
