@@ -27,7 +27,12 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 helm upgrade --install prometheus prometheus-community/kube-prometheus-stack
 
 echo "Building Docker images..."
-docker build -t wtech-api:latest -f src/WTech.API/Dockerfile .
+for dir in src/* ; do
+    if [ -d "$dir" ]; then
+        project_name=$(basename "$dir" | tr '[:upper:]' '[:lower:]' | tr -cd '[:alnum:]-')
+        docker build -t "$project_name:latest" -f "$dir/Dockerfile" .
+    fi
+done
 
 echo "Pushing Git Branch..."
 if ! git remote get-url minikube-git &> /dev/null; then
