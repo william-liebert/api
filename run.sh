@@ -2,8 +2,6 @@
 
 set -ex
 
-trap 'kill $(jobs -p) 2>/dev/null' EXIT
-
 if ! minikube status > /dev/null 2>&1; then
     minikube start --driver=docker
 fi
