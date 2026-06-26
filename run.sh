@@ -41,7 +41,7 @@ for dir in src/* ; do
 done
 
 echo "Pushing Git Branch..."
-MINIKUBE_GIT_URL="https://127.0.0.1:3000"
+MINIKUBE_GIT_URL=$(minikube service gitea-http --url 2>/dev/null | head -1)
 git remote add minikube-git "$MINIKUBE_GIT_URL" || git remote set-url minikube-git "$MINIKUBE_GIT_URL"
 git push minikube-git --all
 
