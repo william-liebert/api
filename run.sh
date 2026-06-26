@@ -26,7 +26,7 @@ GITEA_PORT=$(kubectl get service gitea-http -o jsonpath='{.spec.ports[0].nodePor
 echo "Installing Prometheus Stack via Helm..."
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm upgrade --install prometheus prometheus-community/kube-prometheus-stack
-GRAFANA_PORT=$(kubectl get service prometheus-grafana -o jsonpath='{.spec.ports[0].nodePort}')
+GRAFANA_PORT=$(kubectl get service prometheus-nodeport -o jsonpath='{.spec.ports[0].nodePort}')
 
 echo "Building Docker images..."
 for dockerfile in src/*/Dockerfile ; do
