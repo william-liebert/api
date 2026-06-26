@@ -16,21 +16,27 @@ helm repo add argo https://argoproj.github.io/argo-helm
 helm upgrade --install argo-cd argo/argo-cd
 
 echo "Exposing ArgoCD on port 8081..."
-kubectl port-forward deployment/argo-cd-server 8081:8080 || true &
+if ! pgrep -f "kubectl port-forward deployment/argo-cd-server 8081:8080" > /dev/null; then
+    kubectl port-forward deployment/argo-cd-server 8081:8080 || true &
+fi
 
 echo "Installing Gitea via Helm..."
 helm repo add gitea-charts https://dl.gitea.com/charts/
 helm upgrade --install gitea gitea-charts/gitea
 
 echo "Exposing Gitea on port 3000..."
-kubectl port-forward svc/gitea-http 3000:3000 || true &
+if ! pgrep -f "kubectl port-forward svc/gitea-http 3000:3000" > /dev/null; then
+    kubectl port-forward svc/gitea-http 3000:3000 || true &
+fi
 
 echo "Installing Prometheus Stack via Helm..."
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm upgrade --install prometheus prometheus-community/kube-prometheus-stack
 
 echo "Exposing Grafana on port 3002..."
-kubectl port-forward svc/prometheus-grafana 3002:80 -n default > /dev/null 2>&1 &
+if ! pgrep -f "kubectl port-forward svc/prometheus-grafana 3002:80" > /dev/null; then
+    kubectl port-forward svc/prometheus-grafana 3002:80 -n default > /dev/null 2>&1 &
+fi
 
 echo "Building Docker images..."
 for dir in src/* ; do
