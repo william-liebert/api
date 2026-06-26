@@ -1,0 +1,7 @@
+service:
+  http:
+    type: NodePort
+    nodePort: 30030
+  ssh:
+    type: NodePort
+    nodePort: 30022
