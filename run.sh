@@ -15,17 +15,20 @@ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 echo "Installing ArgoCD via Helm..."
 helm repo add argo https://argoproj.github.io/argo-helm
 helm upgrade --install argo-cd argo/argo-cd
+minikube service argo-cd-argocd-server --url &
 ARGOCD_PORT=$(kubectl get service argo-cd-argocd-server -o jsonpath='{.spec.ports[0].nodePort}')
 ARGOCD_ADMIN_PASSWORD=$(kubectl get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
 echo "Installing Gitea via Helm with NodePort..."
 helm repo add gitea-charts https://dl.gitea.com/charts/
 helm upgrade --install gitea gitea-charts/gitea
+minikube service gitea-http --url &
 GITEA_PORT=$(kubectl get service gitea-http -o jsonpath='{.spec.ports[0].nodePort}')
 
 echo "Installing Prometheus Stack via Helm..."
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm upgrade --install prometheus prometheus-community/kube-prometheus-stack
+minikube service prometheus-nodeport --url &
 GRAFANA_PORT=$(kubectl get service prometheus-nodeport -o jsonpath='{.spec.ports[0].nodePort}')
 
 echo "Building Docker images..."
