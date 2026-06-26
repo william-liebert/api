@@ -11,7 +11,7 @@ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
 echo "Installing ArgoCD via Helm..."
 helm repo add argo https://argoproj.github.io/argo-helm
-helm upgrade --install argo-cd argo/argo-cd -f kubernetes/helm/argocd/values.yaml
+helm upgrade --install argo-cd argo/argo-cd -f kubernetes/helm/argo-cd/values.yaml
 ARGOCD_ADMIN_PASSWORD=$(kubectl -n default get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 echo "ArgoCD Credentials: [Username: \"admin\", Password: \"$ARGOCD_ADMIN_PASSWORD\"]"
 
