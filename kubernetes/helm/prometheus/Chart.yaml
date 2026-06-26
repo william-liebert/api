@@ -1,6 +1,0 @@
-apiVersion: v2
-name: prometheus-nodeport
-description: A Helm chart for Prometheus NodePort service
-type: application
-version: 0.1.0
-appVersion: "1.0"

@@ -25,8 +25,9 @@ helm upgrade --install gitea gitea-charts/gitea -f kubernetes/helm/gitea/values.
 echo "Installing Prometheus Stack via Helm..."
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm upgrade --install prometheus prometheus-community/kube-prometheus-stack
-helm upgrade --install prometheus-nodeport kubernetes/helm/prometheus
-helm upgrade --install grafana-nodeport kubernetes/helm/grafana
+kubectl expose deployment prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-np
+kubectl expose deployment grafana-server --type=NodePort --target-port=3000 --name=grafana-server-np
+
 
 echo "Building Docker images..."
 for dockerfile in src/*/Dockerfile ; do
