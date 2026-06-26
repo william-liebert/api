@@ -15,21 +15,18 @@ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 echo "Installing ArgoCD via Helm..."
 helm repo add argo https://argoproj.github.io/argo-helm
 helm upgrade --install argo-cd argo/argo-cd
-minikube service argo-cd-argocd-server --url &
-ARGOCD_PORT=$(kubectl get service argo-cd-argocd-server -o jsonpath='{.spec.ports[0].nodePort}')
+ARGOCD_ENDPOINT=$((minikube service argo-cd-argocd-server --url &) | grep -m 1 -o 'http://[^ ]*')
 ARGOCD_ADMIN_PASSWORD=$(kubectl get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
 echo "Installing Gitea via Helm with NodePort..."
 helm repo add gitea-charts https://dl.gitea.com/charts/
 helm upgrade --install gitea gitea-charts/gitea
-minikube service gitea-http --url &
-GITEA_PORT=$(kubectl get service gitea-http -o jsonpath='{.spec.ports[0].nodePort}')
+GITEA_ENDPOINT=$((minikube service gitea-http --url &) | grep -m 1 -o 'http://[^ ]*')
 
 echo "Installing Prometheus Stack via Helm..."
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm upgrade --install prometheus prometheus-community/kube-prometheus-stack
-minikube service prometheus-nodeport --url &
-GRAFANA_PORT=$(kubectl get service prometheus-nodeport -o jsonpath='{.spec.ports[0].nodePort}')
+GRAFANA_ENDPOINT=$((minikube service prometheus-nodeport --url &) | grep -m 1 -o 'http://[^ ]*')
 
 echo "Building Docker images..."
 for dockerfile in src/*/Dockerfile ; do
@@ -52,6 +49,9 @@ echo "  SSH: ssh://git@$(minikube ip):30022"
 
 echo "Done."
 echo "ArgoCD Credentials: [Username: \"admin\", Password: \"$ARGOCD_ADMIN_PASSWORD\"]"
-echo "ArgoCD endpoint: [http://$MINIKUBE_IP:$ARGOCD_PORT]"
+echo "ArgoCD endpoint: [$ARGOCD_ENDPOINT]"
 echo "Gitea endpoint: [$MINIKUBE_GIT_URL]"
-echo "Grafana endpoint: [http://$MINIKUBE_IP:$GRAFANA_PORT]"
+echo "Grafana endpoint: [$GRAFANA_ENDPOINT]"
+
+# wait forever to keep the script running
+while true; do sleep 1; done
