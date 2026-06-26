@@ -14,7 +14,7 @@ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
 echo "Installing ArgoCD via Helm..."
 helm repo add argo https://argoproj.github.io/argo-helm
-helm upgrade --install argo-cd argo/argo-cd -f kubernetes/helm/argo-cd/values.yaml
+helm upgrade --install argo-cd argo/argo-cd
 ARGOCD_URL=$(minikube service argocd-server --url)
 echo "ArgoCD endpoint: [$ARGOCD_URL]"
 ARGOCD_ADMIN_PASSWORD=$(kubectl -n default get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
@@ -22,7 +22,7 @@ echo "ArgoCD Credentials: [Username: \"admin\", Password: \"$ARGOCD_ADMIN_PASSWO
 
 echo "Installing Gitea via Helm with NodePort..."
 helm repo add gitea-charts https://dl.gitea.com/charts/
-helm upgrade --install gitea gitea-charts/gitea -f kubernetes/helm/gitea/values.yaml
+helm upgrade --install gitea gitea-charts/gitea
 GITEA_URL=$(minikube service gitea-http --url)
 echo "Gitea endpoint: [$GITEA_URL]"
 
