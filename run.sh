@@ -14,11 +14,6 @@ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 echo "Installing ArgoCD via Helm..."
 helm repo add argo https://argoproj.github.io/argo-helm
 helm upgrade --install argo-cd argo/argo-cd
-
-echo "Exposing ArgoCD on port 8080..."
-if ! pgrep -f "kubectl port-forward service/argo-cd-server 8080:443" > /dev/null; then
-    kubectl port-forward service/argo-cd-server 8080:443 || true &
-fi
 ARGOCD_ADMIN_PASSWORD=$(kubectl -n default get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 echo "ArgoCD Credentials: [Username: \"admin\", Password: \"$ARGOCD_ADMIN_PASSWORD\"]"
 
@@ -29,11 +24,8 @@ helm upgrade --install gitea gitea-charts/gitea -f kubernetes/helm/gitea/values.
 echo "Installing Prometheus Stack via Helm..."
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm upgrade --install prometheus prometheus-community/kube-prometheus-stack
-
-echo "Exposing Grafana on port 8081..."
-if ! pgrep -f "kubectl port-forward service/prometheus-grafana 8081:80" > /dev/null; then
-    kubectl port-forward service/prometheus-grafana 8081:80 -n default > /dev/null 2>&1 &
-fi
+helm upgrade --install prometheus-nodeport kubernetes/helm/prometheus
+helm upgrade --install grafana-nodeport kubernetes/helm/grafana
 
 echo "Building Docker images..."
 for dir in src/* ; do
@@ -58,4 +50,5 @@ argocd app sync wtech-api || true
 echo "Gitea is now accessible via NodePort:"
 echo "  HTTP: http://$(minikube ip):30000"
 echo "  SSH: ssh://git@$(minikube ip):30022"
+
 echo "Done."
