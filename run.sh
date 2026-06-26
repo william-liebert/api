@@ -24,16 +24,7 @@ echo "ArgoCD Credentials: [Username: \"admin\", Password: \"$ARGOCD_ADMIN_PASSWO
 
 echo "Installing Gitea via Helm with NodePort..."
 helm repo add gitea-charts https://dl.gitea.com/charts/
-# Create a temporary values file for Gitea with NodePort configuration
-cat > /tmp/gitea-values.yaml << EOF
-service:
-  http:
-    type: NodePort
-    nodePort: 30000
-EOF
-helm upgrade --install gitea gitea-charts/gitea -f /tmp/gitea-values.yaml
-
-echo "Gitea is now exposed via NodePort on port 30000"
+helm upgrade --install gitea gitea-charts/gitea -f kubernetes/helm/gitea/values.yaml
 
 echo "Installing Prometheus Stack via Helm..."
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -53,11 +44,18 @@ for dir in src/* ; do
 done
 
 echo "Pushing Git Branch..."
-MINIKUBE_GIT_URL=$(minikube service gitea-http --url 2>/dev/null | grep 127.0.0.1 | head -1)
+if [ -z "$MINIKUBE_GIT_URL" ]; then
+    # Fallback to minikube IP if minikube service command doesn't work
+    MINIKUBE_IP=$(minikube ip)
+    MINIKUBE_GIT_URL="http://$MINIKUBE_IP:30000"
+fi
 git remote add minikube-git "$MINIKUBE_GIT_URL" || git remote set-url minikube-git "$MINIKUBE_GIT_URL"
 git push minikube-git --all
 
 echo "Syncing Deployments..."
 argocd app sync wtech-api || true
 
+echo "Gitea is now accessible via NodePort:"
+echo "  HTTP: http://$(minikube ip):30000"
+echo "  SSH: ssh://git@$(minikube ip):30022"
 echo "Done."

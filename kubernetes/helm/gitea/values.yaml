@@ -1,0 +1,11 @@
+service:
+  http:
+    type: NodePort
+    port: 3000
+    nodePort: 30000
+    clusterIP: ""
+  ssh:
+    type: NodePort
+    port: 22
+    nodePort: 30022
+    clusterIP: ""
