@@ -21,11 +21,16 @@ echo "ArgoCD Credentials: [Username: \"admin\", Password: \"$ARGOCD_ADMIN_PASSWO
 echo "Installing Gitea via Helm with NodePort..."
 helm repo add gitea-charts https://dl.gitea.com/charts/
 helm upgrade --install gitea gitea-charts/gitea -f kubernetes/helm/gitea/values.yaml
+if ! kubectl get service gitea-np > /dev/null 2>&1; then
+    kubectl expose deployment gitea --type=NodePort --target-port=3000 --name=gitea-np
+fi
 
 echo "Installing Prometheus Stack via Helm..."
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm upgrade --install prometheus prometheus-community/kube-prometheus-stack
-kubectl expose deployment prometheus-grafana --type=NodePort --target-port=3000 --name=prometheus-grafana-np
+if ! kubectl get service prometheus-grafana-np > /dev/null 2>&1; then
+    kubectl expose deployment prometheus-grafana --type=NodePort --target-port=8080 --name=prometheus-grafana-np
+fi
 
 echo "Building Docker images..."
 for dockerfile in src/*/Dockerfile ; do
@@ -36,19 +41,17 @@ for dockerfile in src/*/Dockerfile ; do
 done
 
 echo "Pushing Git Branch..."
-if [ -z "$MINIKUBE_GIT_URL" ]; then
-    # Fallback to minikube IP if minikube service command doesn't work
-    MINIKUBE_IP=$(minikube ip)
-    MINIKUBE_GIT_URL="http://$MINIKUBE_IP:30000"
-fi
+MINIKUBE_IP=$(minikube ip)
+MINIKUBE_PORT=$(kubectl get service gitea-np -o jsonpath='{.spec.ports[0].nodePort}')
+MINIKUBE_GIT_URL="http://$MINIKUBE_IP:$MINIKUBE_PORT/wtech-api.git"
 git remote add minikube-git "$MINIKUBE_GIT_URL" || git remote set-url minikube-git "$MINIKUBE_GIT_URL"
-git push minikube-git --all
+git push minikube-git --all -vvv
 
 echo "Syncing Deployments..."
 argocd app sync wtech-api || true
 
 echo "Gitea is now accessible via NodePort:"
-echo "  HTTP: http://$(minikube ip):30000"
+echo "  HTTP: $MINIKUBE_GIT_URL"
 echo "  SSH: ssh://git@$(minikube ip):30022"
 
 echo "Done."
