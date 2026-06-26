@@ -26,10 +26,11 @@ helm upgrade --install prometheus-nodeport kubernetes/helm/prometheus
 helm upgrade --install grafana-nodeport kubernetes/helm/grafana
 
 echo "Building Docker images..."
-for csproj in src/*/*.csproj ; do
-    project_name=$(basename "$csproj" .csproj | tr '[:upper:]' '[:lower:]' | tr '.' '-')
-    project_directory=$(dirname "$csproj")
-    # docker build -t "$project_name:latest" -f "$project_directory/Dockerfile" .
+for dockerfile in src/*/Dockerfile ; do
+    build_dir=$(dirname "$dockerfile")
+    csproj_name=$(basename "$build_dir")
+    docker_image_name=$(echo "$build_dir/$csproj_name.csproj" | tr '[:upper:]' '[:lower:]' | tr '.' '-')
+    docker build -t "$docker_image_name:latest" -f "$dockerfile" .
 done
 
 echo "Pushing Git Branch..."
