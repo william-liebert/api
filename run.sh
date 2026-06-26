@@ -4,6 +4,9 @@ set -ex
 
 if ! minikube status > /dev/null 2>&1; then
     minikube start --driver=docker
+    while ! minikube status > /dev/null 2>&1; do
+        sleep 1
+    done
 fi
 
 echo "Installing Helm..."
