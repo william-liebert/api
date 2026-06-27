@@ -5,10 +5,10 @@ output "argocd_server_url" {
 
 output "argocd_server_service_name" {
   description = "Name of the Argo CD server service"
-  value       = helm_release.argocd.name
+  value       = "argocd-server"
 }
 
 output "argocd_namespace" {
   description = "Namespace where Argo CD is deployed"
-  value       = helm_release.argocd.namespace
+  value       = "argocd"
 }

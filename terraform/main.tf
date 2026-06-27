@@ -1,12 +1,12 @@
 # Configure the Kubernetes provider
 provider "kubernetes" {
-  config_path = var.kubeconfig_path
+  config_path = "../kubeconfig.minikube"
 }
 
 # Configure the Helm provider
 provider "helm" {
-  kubernetes {
-    config_path = var.kubeconfig_path
+  kubernetes = {
+    config_path = "../kubeconfig.minikube"
   }
 }
 
@@ -14,16 +14,10 @@ provider "helm" {
 resource "helm_release" "argocd" {
   name       = "argocd"
   repository = "https://argoproj.github.io/argo-helm"
-  chart      = "argocd"
-  version    = var.argocd_version
+  chart      = "argo-cd"
+  version    = "7.0.1"
 
-  set {
-    name  = "server.service.type"
-    value = "NodePort"
-  }
-
-  set {
-    name  = "server.service.nodePort"
-    value = var.argocd_server_port
-  }
+  values = [
+    file("${path.module}/helm/argocd-values.yaml")
+  ]
 }

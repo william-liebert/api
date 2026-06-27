@@ -47,6 +47,8 @@ echo "Pushing Git Branch..."
 git remote add minikube-git "$GIT_REPO_ENDPOINT" || git remote set-url minikube-git "$GIT_REPO_ENDPOINT"
 git push minikube-git --all
 
+
+
 echo "Syncing Deployments..."
 argocd app sync wtech-api || true
 
