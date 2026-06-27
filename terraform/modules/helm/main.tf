@@ -27,6 +27,8 @@ resource "helm_release" "prometheus" {
   version    = var.prometheus_helm_chart_version
 
   values = [
-    file("${path.module}/prometheus/values.yaml")
+    templatefile("${path.module}/prometheus/values.yaml", {
+      node_port = 30090
+    })
   ]
 }
