@@ -36,7 +36,7 @@ kubectl port-forward svc/prometheus-kube-prometheus-stack-grafana 9090:9090 &
 GRAFANA_ENDPOINT="http://127.0.0.1:9090"
 
 echo "Pushing Git Branch..."
-GIT_REPO_ENDPOINT="$GITEA_ENDPOINT/localadmin/wtech-api.git"
+GIT_REPO_ENDPOINT="$GITEA_ENDPOINT/developer/wtech-api.git"
 git remote add minikube-git "$GIT_REPO_ENDPOINT" || git remote set-url minikube-git "$GIT_REPO_ENDPOINT"
 git push minikube-git --all
 
@@ -45,6 +45,7 @@ echo "Done."
 echo ""
 echo "ArgoCD Credentials: [Username: \"admin\", Password: \"$ARGOCD_ADMIN_PASSWORD\"]"
 echo "ArgoCD endpoint: [$ARGOCD_ENDPOINT]"
+echo "Gitea Credentials: [Username: \"developer\", Password: \"password\"]"
 echo "Gitea endpoint: [$GITEA_ENDPOINT]"
 echo "Git Repository endpoint: [$GIT_REPO_ENDPOINT]"
 echo "Grafana endpoint: [$GRAFANA_ENDPOINT]"
