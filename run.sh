@@ -2,6 +2,8 @@
 
 set -ex
 
+# trap 'kill $(jobs -p)' EXIT INT TERM
+
 if ! minikube status > /dev/null 2>&1; then
     minikube start --driver=docker &
     while ! minikube status > /dev/null 2>&1; do
@@ -26,7 +28,8 @@ helm repo add gitea-charts https://dl.gitea.com/charts/
 helm upgrade --install gitea gitea-charts/gitea -f kubernetes/helm/gitea/values.yaml
 GITEA_PORT=3000
 kubectl port-forward svc/gitea-http $GITEA_PORT:3000 &
-GITEA_ENDPOINT="http://$MINIKUBE_IP:$GITEA_PORT"
+kubectl port-forward svc/gitea-ssh $GITEA_PORT:22 &
+GITEA_ENDPOINT="git@$MINIKUBE_IP:$GITEA_PORT:admin/wtech-api.git"
 
 echo "Installing Prometheus Stack via Helm..."
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -42,7 +45,7 @@ for dockerfile in src/*/Dockerfile ; do
 done
 
 echo "Pushing Git Branch..."
-git remote add minikube-git "$GITEA_ENDPOINT/admin/wtech-api.git" || git remote set-url minikube-git "$GITEA_ENDPOINT/admin/wtech-api.git"
+git remote add minikube-git "$GITEA_ENDPOINT" || git remote set-url minikube-git "$GITEA_ENDPOINT"
 git push minikube-git --all -vvv
 
 echo "Syncing Deployments..."
@@ -54,5 +57,4 @@ echo "ArgoCD endpoint: [$ARGOCD_ENDPOINT]"
 echo "Gitea endpoint: [$GITEA_ENDPOINT]"
 echo "Grafana endpoint: [$GRAFANA_ENDPOINT]"
 
-# wait forever to keep the script running
-while true; do sleep 1; done
+wait
