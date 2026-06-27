@@ -12,8 +12,8 @@ resource "helm_release" "argocd" {
 
 resource "helm_release" "gitea" {
   name            = "gitea"
-  repository      = "https://dl.gitea.io/charts"
-  chart           = "gitea-charts/gitea"
+  repository      = "https://dl.gitea.com/charts/"
+  chart           = "gitea"
   cleanup_on_fail = true
   version         = var.gitea_helm_chart_version
 
