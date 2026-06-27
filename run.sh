@@ -5,7 +5,7 @@ set -ex
 trap 'kill $(jobs -p)' EXIT INT TERM
 
 if ! minikube status > /dev/null 2>&1; then
-    minikube start --driver=docker &
+    minikube start --driver=docker --memory=4096 --cpus=2 &
     while ! minikube status > /dev/null 2>&1; do
         sleep 15
     done
@@ -20,13 +20,13 @@ for dockerfile in src/*/Dockerfile ; do
     docker build -t "$docker_image_name:latest" -f "$dockerfile" .
 done
 
-echo "Pushing Git Branch..."
-git remote add minikube-git "$GIT_REPO_ENDPOINT" || git remote set-url minikube-git "$GIT_REPO_ENDPOINT"
-git push minikube-git --all
-
 echo "Applying Terraform..."
 terraform -chdir=terraform init
 terraform -chdir=terraform apply -auto-approve
+
+echo "Pushing Git Branch..."
+git remote add minikube-git "$GIT_REPO_ENDPOINT" || git remote set-url minikube-git "$GIT_REPO_ENDPOINT"
+git push minikube-git --all
 
 set +x
 
