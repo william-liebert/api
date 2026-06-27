@@ -1,7 +1,14 @@
-service:
-  http:
-    type: NodePort
-    nodePort: 30030
-  ssh:
-    type: NodePort
-    nodePort: 30022
+gitea:  
+  admin:
+    existingSecret: gitea-admin
+  config:
+    REPOSITORY:
+      ENABLE_PUSH_CREATE_USER: "true"
+      ENABLE_PUSH_CREATE_ORG: "true"
+  service:
+    http:
+      type: NodePort
+      nodePort: 30030
+    ssh:
+      type: NodePort
+      nodePort: 30022
