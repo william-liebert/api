@@ -2,6 +2,51 @@
 
 A modern .NET 8 web API built with ASP.NET Core, containerized with Docker, and deployed to Kubernetes using Terraform and Minikube.
 
+## Terraform Module for Argo CD Deployment
+
+This repository includes a Terraform module in the `terraform` directory that can deploy Argo CD to a local Minikube cluster. The deployment exposes Argo CD on port 30080 (127.0.0.1:30080) as requested.
+
+### Features
+
+- Deploys Argo CD using Helm chart
+- Exposes Argo CD server on NodePort 30080
+- Configurable version and port settings
+- Includes validation and deployment scripts
+
+### Deployment
+
+To deploy Argo CD:
+
+1. Ensure Minikube is running:
+   ```bash
+   minikube start --driver=docker
+   ```
+
+2. Navigate to the terraform directory:
+   ```bash
+   cd terraform
+   ```
+
+3. Run the deployment script:
+   ```bash
+   ./deploy.sh
+   ```
+
+4. Access Argo CD at: http://127.0.0.1:30080
+
+### Terraform Module Structure
+
+```
+terraform/
+├── main.tf           # Main Terraform configuration
+├── variables.tf      # Input variables
+├── outputs.tf        # Output values
+├── terraform.tfvars  # Default variable values
+├── README.md         # This file
+├── deploy.sh         # Deployment script
+└── validate.sh       # Validation script
+```
+
 ## Overview
 
 This repository contains a complete web API project that demonstrates:
