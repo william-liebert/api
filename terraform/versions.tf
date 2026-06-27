@@ -8,5 +8,9 @@ terraform {
       source  = "hashicorp/helm"
       version = "~> 3.0"
     }
+    gitea = {
+      source  = "go-gitea/gitea"
+      version = "0.7.0"
+    }
   }
 }
