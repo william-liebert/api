@@ -1,0 +1,11 @@
+# Default Argo CD values
+controller:
+  replicas: 1
+
+server:
+  replicas: 1
+
+configs:
+  params:
+    # Allow all repositories for gitops operations
+    server.repo.server.tls.client.skip.verify: true
