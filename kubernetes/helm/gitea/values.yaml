@@ -1,10 +1,10 @@
 gitea:
   admin:
-    username: localadmin
+    username: developer
     password: password
     email: "local@email.com"
   config:
-    REPOSITORY:
+    repository:
       ENABLE_PUSH_CREATE_USER: "true"
       ENABLE_PUSH_CREATE_ORG: "true"
     server:
