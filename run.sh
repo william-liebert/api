@@ -2,12 +2,13 @@
 
 set -ex
 
-if ! minikube status > /dev/null 2>&1; then
-    minikube start --driver=docker &
-    while ! minikube status > /dev/null 2>&1; do
-        sleep 15
-    done
-fi
+# Disabling for now, fix later. Don't worry about it for now.
+# if minikube status > /dev/null 2>&1; then
+#     minikube start --driver=docker &
+#     while ! minikube status > /dev/null 2>&1; do
+#         sleep 15
+#     done
+# fi
 
 echo "Installing Helm..."
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
