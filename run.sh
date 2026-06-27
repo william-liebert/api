@@ -2,7 +2,7 @@
 
 set -ex
 
-trap 'kill $(jobs -p)' EXIT INT TERM
+trap 'kill $(jobs -p) || true' EXIT INT TERM
 
 if ! minikube status > /dev/null 2>&1; then
     minikube start --driver=docker --memory=4096 --cpus=2 &
