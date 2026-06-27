@@ -20,15 +20,15 @@ resource "helm_release" "gitea" {
   ]
 }
 
-# resource "helm_release" "prometheus" {
-#   name            = "prometheus"
-#   repository      = "https://prometheus-community.github.io/helm-charts"
-#   chart           = "prometheus"
-#   version         = "15.0.1"
+resource "helm_release" "prometheus" {
+  name            = "prometheus"
+  repository      = "https://prometheus-community.github.io/helm-charts"
+  chart           = "prometheus"
+  version         = "15.0.1"
 
-#   values = [
-#     templatefile("${path.module}/values/prometheus.yaml", {
-#       node_port = 30090
-#     })
-#   ]
-# }
+  values = [
+    templatefile("${path.module}/values/prometheus.yaml", {
+      node_port = 30090
+    })
+  ]
+}
