@@ -1,11 +1,7 @@
-module "argocd" {
-  source = "./modules/argocd"
-}
+module "helm" {
+  source = "./modules/helm"
 
-module "gitea" {
-  source = "./modules/gitea"
-}
-
-module "prometheus" {
-  source = "./modules/prometheus"
+  argocd_helm_chart_version     = var.argocd_helm_chart_version
+  gitea_helm_chart_version      = var.gitea_helm_chart_version
+  prometheus_helm_chart_version = var.prometheus_helm_chart_version
 }

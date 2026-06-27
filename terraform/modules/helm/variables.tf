@@ -1,8 +1,3 @@
-variable "kubeconfig_path" {
-  description = "Path to kubeconfig file"
-  type        = string
-}
-
 variable "argocd_helm_chart_version" {
   description = "Version of Argo CD Helm chart to deploy"
   type        = string
