@@ -1,22 +1,29 @@
-variable "kubeconfig_path" {
-  description = "Path to kubeconfig file"
-  type        = string
-}
-
 variable "argocd_helm_chart_version" {
   description = "Version of Argo CD Helm chart to deploy"
-  type        = string
-  default     = "10.0.0"
+  type        = optional(string)
+}
+
+variable "gitea_admin_password" {
+  description = "Admin password for Gitea"
+  type        = optional(string)
+}
+
+variable "gitea_admin_username" {
+  description = "Admin username for Gitea"
+  type        = optional(string)
 }
 
 variable "gitea_helm_chart_version" {
   description = "Version of Gitea Helm chart to deploy"
-  type        = string
-  default     = "7.0.1"
+  type        = optional(string)
+}
+
+variable "kubeconfig_path" {
+  description = "Path to kubeconfig file"
+  type        = optional(string)
 }
 
 variable "prometheus_helm_chart_version" {
   description = "Version of Prometheus Helm chart to deploy"
-  type        = string
-  default     = "15.0.1"
+  type        = optional(string)
 }
