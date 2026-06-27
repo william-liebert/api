@@ -20,9 +20,6 @@ ARGOCD_ADMIN_PASSWORD=$(kubectl get secret argocd-initial-admin-secret -o jsonpa
 
 echo "Installing Gitea via Helm with NodePort..."
 helm repo add gitea-charts https://dl.gitea.com/charts/
-kubectl create secret generic gitea-admin \
-  --from-literal=username=admin \
-  --from-literal=password='password' || true
 helm upgrade --install gitea gitea-charts/gitea -f kubernetes/helm/gitea/values.yaml
 GITEA_ENDPOINT=$((minikube service gitea-http --url &) | grep -m 1 -o 'http://[^ ]*')
 
