@@ -1,7 +1,8 @@
 gitea:
   admin:
-    username: admin
+    username: localadmin
     password: password
+    email: "local@email.com"
   config:
     REPOSITORY:
       ENABLE_PUSH_CREATE_USER: "true"
