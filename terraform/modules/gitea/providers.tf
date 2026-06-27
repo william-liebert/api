@@ -6,9 +6,3 @@ terraform {
     }
   }
 }
-
-provider "gitea" {
-  base_url = "http://127.0.0.1:3000"
-  username = vars.gitea_admin_username
-  password = vars.gitea_admin_password
-}
