@@ -19,11 +19,7 @@ provider "kubernetes" {
   config_path = vars.kubeconfig_path
 }
 
-provider "helm" {
-  kubernetes = {
-    config_path = vars.kubeconfig_path
-  }
-}
+provider "helm" {}
 
 provider "gitea" {
   base_url = "http://127.0.0.1:3000"
