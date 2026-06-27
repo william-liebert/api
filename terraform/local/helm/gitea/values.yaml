@@ -9,10 +9,4 @@ gitea:
       ENABLE_PUSH_CREATE_ORG: "true"
     server:
       HTTP_PORT: 3000
-  service:
-    http:
-      type: NodePort
-      nodePort: 30030
-    ssh:
-      type: NodePort
-      nodePort: 30022
+      

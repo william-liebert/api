@@ -21,8 +21,12 @@ for dockerfile in src/*/Dockerfile ; do
 done
 
 echo "Applying Terraform..."
-terraform -chdir=terraform init
-terraform -chdir=terraform apply -auto-approve
+terraform -chdir=terraform/local/helm init
+terraform -chdir=terraform/local/helm apply -auto-approve
+terraform -chdir=terraform/local/gitea init
+terraform -chdir=terraform/local/gitea apply -auto-approve
+terraform -chdir=terraform/local/argocd init
+terraform -chdir=terraform/local/argocd apply -auto-approve
 
 echo "Pushing Git Branch..."
 git remote add minikube-git "$GIT_REPO_ENDPOINT" || git remote set-url minikube-git "$GIT_REPO_ENDPOINT"
