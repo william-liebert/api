@@ -2,23 +2,23 @@
 
 set -ex
 
-trap 'kill $(jobs -p) || true' EXIT INT TERM
+# trap 'kill $(jobs -p) || true' EXIT INT TERM
 
-if ! minikube status > /dev/null 2>&1; then
-    minikube start --driver=docker --memory=4096 --cpus=2 &
-    while ! minikube status > /dev/null 2>&1; do
-        sleep 15
-    done
-fi
+# if ! minikube status > /dev/null 2>&1; then
+#     minikube start --driver=docker --memory=4096 --cpus=2 &
+#     while ! minikube status > /dev/null 2>&1; do
+#         sleep 15
+#     done
+# fi
 
-echo "Installing Helm..."
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+# echo "Installing Helm..."
+# curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
-echo "Building Docker images..."
-for dockerfile in src/*/Dockerfile ; do
-    docker_image_name=$(basename "$(dirname "$dockerfile")" | tr '[:upper:]' '[:lower:]' | tr '.' '-')
-    docker build -t "$docker_image_name:latest" -f "$dockerfile" .
-done
+# echo "Building Docker images..."
+# for dockerfile in src/*/Dockerfile ; do
+#     docker_image_name=$(basename "$(dirname "$dockerfile")" | tr '[:upper:]' '[:lower:]' | tr '.' '-')
+#     docker build -t "$docker_image_name:latest" -f "$dockerfile" .
+# done
 
 echo "Applying Terraform..."
 terraform -chdir=terraform/local/helm init
