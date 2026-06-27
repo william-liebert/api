@@ -2,15 +2,11 @@
 
 set -ex
 
-if ! minikube status > /dev/null 2>&1; then
-    minikube start --driver=docker --memory=4096 --cpus=2 &
-    while ! minikube status > /dev/null 2>&1; do
-        sleep 15
-    done
-fi
+trap 'kill $(jobs -p) 2>/dev/null' EXIT INT TERM
 
-echo "Installing Helm..."
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+if ! minikube status > /dev/null 2>&1; then
+    minikube start --driver=docker --memory=4096 --cpus=2
+fi
 
 echo "Building Docker images..."
 for dockerfile in src/*/Dockerfile ; do
@@ -21,7 +17,7 @@ done
 echo "Applying Terraform..."
 terraform -chdir=terraform/local/helm init
 terraform -chdir=terraform/local/helm apply -auto-approve
-kubectl port-forward svc/gitea-http 3000:3000 > /dev/null 2>&1&
+kubectl port-forward svc/gitea-http 3000:3000 > /dev/null 2>&1 &
 terraform -chdir=terraform/local/gitea init
 terraform -chdir=terraform/local/gitea apply -auto-approve
 kubectl port-forward svc/argo-cd-argocd-server 30080:80 > /dev/null 2>&1 &
@@ -36,6 +32,7 @@ git remote add minikube-git "$GIT_REPO_ENDPOINT" || git remote set-url minikube-
 git push minikube-git --all
 
 set +x
+
 echo "Done. Waiting for interrupt..."
 echo ""
 echo "ArgoCD Credentials: [Username: \"admin\", Password: \"$ARGOCD_ADMIN_PASSWORD\"]"
@@ -43,5 +40,6 @@ echo "ArgoCD endpoint: [http://127.0.0.1:30080]"
 echo "Gitea Credentials: [Username: \"developer\", Password: \"password\"]"
 echo "Gitea endpoint: [http://127.0.0.1:3000]"
 echo "Grafana endpoint: [http://127.0.0.1:9090]"
+echo ""
 
 wait
