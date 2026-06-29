@@ -1,5 +1,5 @@
 image:
-  repository: web-api-local
+  repository: wtech-api
   tag: latest
 
 replicaCount: 2
