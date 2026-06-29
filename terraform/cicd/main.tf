@@ -1,8 +1,3 @@
-
-module "helm" {
-  source          = "./modules/helm"
-}
-
 module "gitea" {
   source          = "./modules/gitea"
 
