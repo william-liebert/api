@@ -16,6 +16,10 @@ for dockerfile in src/*/Dockerfile ; do
 done
 
 echo "Applying Terraform..."
+helm uninstall argocd || true
+helm uninstall gitea || true
+helm uninstall prometheus || true
+helm uninstall wtech-api || true
 terraform -chdir=terraform/local/helm init
 terraform -chdir=terraform/local/helm apply -auto-approve
 kubectl port-forward svc/gitea-http 3000:3000 > /dev/null 2>&1 &
