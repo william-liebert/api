@@ -24,6 +24,19 @@ resource "helm_release" "gitea" {
   ]
 }
 
+resource "helm_release" "gitea_actions" {
+  name            = "gitea-actions"
+  repository      = "https://dl.gitea.com/charts/"
+  chart           = "gitea-actions"
+  version         = "12.6.0"
+  take_ownership  = true
+  replace         = true
+  
+  values = [
+    file("${path.module}/values/gitea-actions.yaml")
+  ]
+}
+
 resource "helm_release" "prometheus" {
   name            = "prometheus"
   repository      = "https://prometheus-community.github.io/helm-charts"
