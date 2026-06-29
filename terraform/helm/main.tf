@@ -27,8 +27,8 @@ resource "helm_release" "gitea" {
 resource "helm_release" "gitea_actions" {
   name            = "gitea-actions"
   repository      = "https://dl.gitea.com/charts/"
-  chart           = "gitea-actions"
-  version         = "12.6.0"
+  chart           = "actions"
+  version         = "0.1.1"
   take_ownership  = true
   replace         = true
   
