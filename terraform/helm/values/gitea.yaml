@@ -9,8 +9,9 @@ gitea:
       ENABLE_PUSH_CREATE_ORG: "true"
     server:
       HTTP_PORT: 3000
+      ROOT_URL: http://$(MINIKUBE_IP):33000
 
 service:
   http:
-    type: ClusterIP
-    port: 3000
+    type: NodePort
+    nodePort: 33000

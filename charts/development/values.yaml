@@ -1,0 +1,19 @@
+# Default values for development chart
+
+gitea:
+  service:
+    type: NodePort
+    port: 3000
+    nodePort: 30001
+
+argocd:
+  service:
+    type: NodePort
+    port: 80
+    nodePort: 30002
+
+grafana:
+  service:
+    type: NodePort
+    port: 9090
+    nodePort: 30003

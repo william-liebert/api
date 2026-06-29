@@ -1,5 +1,0 @@
-image:
-  repository: wtech-api
-  tag: latest
-
-replicaCount: 2

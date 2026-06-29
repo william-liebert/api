@@ -1,0 +1,6 @@
+apiVersion: v2
+name: development
+description: A Helm chart for deploying development services with NodePort exposure
+type: application
+version: 0.1.0
+appVersion: "1.0"
