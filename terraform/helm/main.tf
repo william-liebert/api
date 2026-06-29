@@ -72,8 +72,4 @@ resource "helm_release" "wtech_api" {
       }
     })
   ]
-
-  depends_on = [
-    helm_release.argocd
-   ]
 }
