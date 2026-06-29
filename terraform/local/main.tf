@@ -21,3 +21,13 @@ module "argocd" {
     module.gitea
   ]
 }
+
+module "ministack" {
+  source          = "./modules/ministack"
+
+  depends_on = [
+    module.helm,
+    module.gitea,
+    module.argocd
+  ]
+}

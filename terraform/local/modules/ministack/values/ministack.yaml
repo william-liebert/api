@@ -1,0 +1,11 @@
+# Default values for ministack chart
+
+image:
+  repository: "ministack"
+  tag: "latest"
+  pullPolicy: "IfNotPresent"
+
+service:
+  type: "NodePort"
+  port: 80
+  nodePort: 30005
