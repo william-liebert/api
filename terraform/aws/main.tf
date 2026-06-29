@@ -4,8 +4,8 @@
 module "eks_cluster" {
   source = "./us-east-1"
 
-  cluster_name     = var.cluster_name
+  cluster_name       = var.cluster_name
   kubernetes_version = var.kubernetes_version
-  subnet_ids       = var.subnet_ids
-  node_count       = var.node_count
+  subnet_ids         = var.subnet_ids
+  node_count         = var.node_count
 }

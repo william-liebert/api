@@ -1,0 +1,9 @@
+controller:
+  replicas: 1
+
+server:
+  replicas: 1
+
+configs:
+  params:
+    server.repo.server.tls.client.skip.verify: true

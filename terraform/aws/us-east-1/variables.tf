@@ -1,22 +1,19 @@
 variable "cluster_name" {
-  description = "Name of the EKS cluster"
+  description = "The name of the EKS cluster"
   type        = string
-  default     = "eks-cluster"
 }
 
 variable "kubernetes_version" {
-  description = "Kubernetes version for the cluster"
+  description = "The Kubernetes version for the cluster"
   type        = string
-  default     = "1.28"
 }
 
 variable "subnet_ids" {
-  description = "List of subnet IDs for the EKS cluster"
+  description = "List of subnet IDs for the cluster and node group"
   type        = list(string)
 }
 
 variable "node_count" {
-  description = "Number of worker nodes"
+  description = "The number of nodes in the node group"
   type        = number
-  default     = 2
 }

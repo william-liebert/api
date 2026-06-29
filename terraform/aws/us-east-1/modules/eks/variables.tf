@@ -1,0 +1,1 @@
+# EKS Cluster Variables - All values inlined for pet resources
