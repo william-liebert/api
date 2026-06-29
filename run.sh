@@ -9,6 +9,7 @@ if ! minikube status > /dev/null 2>&1; then
 fi
 
 echo "Building Docker images..."
+eval $(minikube docker-env) # Push images to Minikube
 for dockerfile in src/*/Dockerfile ; do
     docker_image_name=$(basename "$(dirname "$dockerfile")" | tr '[:upper:]' '[:lower:]' | tr '.' '-')
     docker build -t "$docker_image_name:latest" -f "$dockerfile" .
