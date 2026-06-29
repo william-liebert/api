@@ -54,7 +54,7 @@ resource "helm_release" "prometheus" {
 
 resource "helm_release" "wtech_api" {
   name            = "wtech-api"
-  chart           = "${path.module}/../../../kubernetes/helm/webapi-chart"
+  chart           = "${path.module}/../../charts/wtech-api"
   version         = "0.1.0"
   take_ownership  = true
   replace         = true
