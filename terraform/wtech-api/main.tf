@@ -1,23 +1,12 @@
 
-module "helm" {
-  source          = "./modules/helm"
-}
+resource "helm_release" "development" {
+  name            = "development"
+  chart           = "https://127.0.0.1:33000/git/wtech-api/charts/development"
+  version         = "0.1.0"
+  take_ownership  = true
+  replace         = true
 
-module "gitea" {
-  source          = "./modules/gitea"
-
-  gitea_admin_username = var.gitea_admin_username
-
-  depends_on = [
-    module.helm
-  ]
-}
-
-module "argocd" {
-  source          = "./modules/argocd"
-
-  depends_on = [
-    module.helm,
-    module.gitea
+  values = [
+    file("${path.module}/resources/values.yaml")
   ]
 }
