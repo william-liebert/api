@@ -8,6 +8,8 @@ minikube delete || true
 minikube start --driver=docker --memory=4096 --cpus=2
 eval $(minikube docker-env) # Set docker env to minikube
 
+minikube image load wtech-api:latest # temporary until Gitea Actions
+
 echo "Applying Terraform..."
 helm uninstall argocd || true
 helm uninstall gitea || true

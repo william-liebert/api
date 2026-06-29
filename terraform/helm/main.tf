@@ -35,6 +35,10 @@ resource "helm_release" "gitea_actions" {
   values = [
     file("${path.module}/values/gitea-actions.yaml")
   ]
+
+  depends_on = [
+    helm_release.gitea
+  ]
 }
 
 resource "helm_release" "prometheus" {
