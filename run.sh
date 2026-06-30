@@ -11,9 +11,15 @@ eval $(minikube docker-env) # Set docker env to minikube
 minikube image load wtech-api:latest # temporary until Gitea Actions
 
 echo "Applying Terraform..."
-terraform -chdir=terraform init
-terraform -chdir=terraform apply -auto-approve
+terraform -chdir=terraform/local init
+terraform -chdir=terraform/local apply -auto-approve
 ARGOCD_ADMIN_PASSWORD=$(kubectl get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+terraform -chdir=terraform/infra init
+terraform -chdir=terraform/infra apply -auto-approve
+terraform -chdir=terraform/cicd init
+terraform -chdir=terraform/cicd apply -auto-approve
+terraform -chdir=terraform/wtech-api init
+terraform -chdir=terraform/wtech-api apply -auto-approve
 
 echo "Pushing Git Branch..."
 GIT_REPO_ENDPOINT="http://developer:password@127.0.0.1:33000/developer/wtech-api.git"

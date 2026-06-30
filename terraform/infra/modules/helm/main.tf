@@ -55,21 +55,3 @@ resource "helm_release" "prometheus" {
     })
   ]
 }
-
-resource "helm_release" "development" {
-  name            = "development"
-  chart           = "${path.module}/../../../charts/development"
-  version         = "0.1.0"
-  take_ownership  = true
-  replace         = true
-
-  values = [
-    file("${path.module}/values/development.yaml")
-  ]
-
-  depends_on = [
-    helm_release.argocd,
-    helm_release.gitea,
-    helm_release.prometheus
-  ]
-}
