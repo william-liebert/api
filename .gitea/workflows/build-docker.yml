@@ -25,7 +25,7 @@ jobs:
           context: .
           file: ./src/WTech.API/Dockerfile
           push: true
-          tags: your-dockerhub-username/wtech-api:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/wtech-api:${{ github.sha }}
           platforms: linux/amd64,linux/arm64
 
       - name: Deploy to EKS
