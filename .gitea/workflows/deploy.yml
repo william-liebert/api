@@ -1,4 +1,4 @@
-name: Deploy to EKS
+name: Deploy to EKS with Helm
 on:
   push:
     branches:
@@ -38,10 +38,15 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Deploy to EKS
+      - name: Deploy to EKS with Helm
         run: |
-          echo "Deploying to EKS cluster..."
-          # Add deployment steps here
+          echo "Deploying to EKS cluster using Helm..."
+          # Add Helm deployment steps here
+          # Example:
+          # helm upgrade --install wtech-api ./charts/development \
+          #   --set image.repository=${{ secrets.DOCKERHUB_USERNAME }}/wtech-api \
+          #   --set image.tag=${{ github.sha }} \
+          #   --namespace development
 
       - name: Verify deployment
         run: |
