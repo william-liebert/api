@@ -1,7 +1,7 @@
 
 resource "helm_release" "development" {
   name           = "development"
-  chart          = "http://127.0.0.1:33000/git/wtech-api/charts/development"
+  chart          = var.chart_repository_url
   version        = "0.1.0"
   take_ownership = true
   replace        = true

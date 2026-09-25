@@ -16,4 +16,6 @@ spec:
     - name: http
       port: {{ .Values.api.service.port }}
       targetPort: {{ .Values.api.service.targetPort }}
+      {{- if or (eq .Values.api.service.type "NodePort") (eq .Values.api.service.type "LoadBalancer") }}
       nodePort: {{ .Values.api.service.nodePort }}
+      {{- end }}

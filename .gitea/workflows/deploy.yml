@@ -7,7 +7,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      REGISTRY: 127.0.0.1:5000
+      REGISTRY: host.minikube.internal:5000
       IMAGE_NAME: wtech-api
       NAMESPACE: default
       RELEASE_NAME: development
@@ -41,4 +41,4 @@ jobs:
         run: |
           kubectl rollout status deployment/${RELEASE_NAME}-api --timeout=180s
           kubectl get svc ${RELEASE_NAME}-api -o wide
-          curl -fsS http://127.0.0.1:30080/weatherforecast | head -c 200
+          curl -fsS http://host.minikube.internal:30080/weatherforecast | head -c 200
