@@ -12,13 +12,6 @@ require() {
   fi
 }
 
-require_local_image() {
-  if ! docker image inspect "$1" >/dev/null 2>&1; then
-    echo "Missing required local image: $1" >&2
-    exit 1
-  fi
-}
-
 require docker
 require git
 require kubectl
@@ -28,13 +21,10 @@ require terraform
 PHASE="minikube"
 minikube delete || true
 minikube start --driver=docker
+minikube addons enable registry >/dev/null
 
 MINIKUBE_IP="$(minikube ip)"
-REGISTRY_HOST="$(minikube ssh "getent hosts host.minikube.internal | awk '{ print \$1; exit }'" | tr -d '\r')"
-if [ -z "${REGISTRY_HOST}" ]; then
-  echo "Unable to resolve host.minikube.internal from Minikube." >&2
-  exit 1
-fi
+REGISTRY_PORT=30500
 GITEA_HOST="${MINIKUBE_IP}:33000"
 GITEA_URL="http://${GITEA_HOST}"
 GITEA_USERNAME="${GITEA_USERNAME:-developer}"
@@ -43,19 +33,34 @@ GIT_REPO_ENDPOINT="http://${GITEA_USERNAME}:${GITEA_PASSWORD}@${GITEA_HOST}/deve
 export TF_VAR_kubeconfig_path="${KUBECONFIG:-$HOME/.kube/config}"
 export TF_VAR_gitea_admin_username="${GITEA_USERNAME}"
 export TF_VAR_gitea_admin_password="${GITEA_PASSWORD}"
-export TF_VAR_api_image_repository="${REGISTRY_HOST}:5000/wtech-api"
+export TF_VAR_api_image_repository="${MINIKUBE_IP}:${REGISTRY_PORT}/wtech-api"
 
 PHASE="docker-registry"
-require_local_image registry:2
-docker rm -f local-registry >/dev/null 2>&1 || true
-docker run -d --name local-registry --restart=always -p 5000:5000 registry:2
+kubectl wait -n kube-system --for=condition=available deployment/registry --timeout=180s >/dev/null
+kubectl apply -f - >/dev/null <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: registry-nodeport
+  namespace: kube-system
+spec:
+  type: NodePort
+  selector:
+    actual-registry: "true"
+    kubernetes.io/minikube-addons: registry
+  ports:
+    - name: http
+      port: 5000
+      targetPort: 5000
+      nodePort: ${REGISTRY_PORT}
+EOF
 
 PHASE="minikube-registry-config"
-minikube ssh "sudo mkdir -p /etc/docker && printf '%s\n' '{\"insecure-registries\":[\"${REGISTRY_HOST}:5000\"]}' | sudo tee /etc/docker/daemon.json >/dev/null && sudo systemctl restart docker" >/dev/null
+minikube ssh "sudo mkdir -p /etc/docker && printf '%s\n' '{\"insecure-registries\":[\"${MINIKUBE_IP}:${REGISTRY_PORT}\"]}' | sudo tee /etc/docker/daemon.json >/dev/null && sudo systemctl restart docker" >/dev/null
 kubectl wait --for=condition=Ready node/minikube --timeout=180s >/dev/null
 
 PHASE="docker-registry"
-REGISTRY_URL="${REGISTRY_HOST}:5000"
+REGISTRY_URL="${MINIKUBE_IP}:${REGISTRY_PORT}"
 
 echo "Applying Terraform..."
 
