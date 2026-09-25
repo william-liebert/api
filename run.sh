@@ -30,6 +30,11 @@ minikube delete || true
 minikube start --driver=docker
 
 MINIKUBE_IP="$(minikube ip)"
+REGISTRY_HOST="$(minikube ssh "getent hosts host.minikube.internal | awk '{ print \$1; exit }'" | tr -d '\r')"
+if [ -z "${REGISTRY_HOST}" ]; then
+  echo "Unable to resolve host.minikube.internal from Minikube." >&2
+  exit 1
+fi
 GITEA_HOST="${MINIKUBE_IP}:33000"
 GITEA_URL="http://${GITEA_HOST}"
 GITEA_USERNAME="${GITEA_USERNAME:-developer}"
@@ -38,26 +43,19 @@ GIT_REPO_ENDPOINT="http://${GITEA_USERNAME}:${GITEA_PASSWORD}@${GITEA_HOST}/deve
 export TF_VAR_kubeconfig_path="${KUBECONFIG:-$HOME/.kube/config}"
 export TF_VAR_gitea_admin_username="${GITEA_USERNAME}"
 export TF_VAR_gitea_admin_password="${GITEA_PASSWORD}"
-export TF_VAR_api_image_repository="${MINIKUBE_IP}:5000/wtech-api"
+export TF_VAR_api_image_repository="${REGISTRY_HOST}:5000/wtech-api"
 
 PHASE="docker-registry"
 require_local_image registry:2
-REGISTRY_IMAGE_ARCHIVE="$(mktemp /tmp/local-registry-image.XXXXXX.tar)"
-docker save registry:2 -o "${REGISTRY_IMAGE_ARCHIVE}"
-eval "$(minikube docker-env)"
-if ! docker image inspect registry:2 >/dev/null 2>&1; then
-  docker load -i "${REGISTRY_IMAGE_ARCHIVE}" >/dev/null
-fi
-rm -f "${REGISTRY_IMAGE_ARCHIVE}"
 docker rm -f local-registry >/dev/null 2>&1 || true
 docker run -d --name local-registry --restart=always -p 5000:5000 registry:2
 
 PHASE="minikube-registry-config"
-minikube ssh "sudo mkdir -p /etc/docker && printf '%s\n' '{\"insecure-registries\":[\"${MINIKUBE_IP}:5000\"]}' | sudo tee /etc/docker/daemon.json >/dev/null && sudo systemctl restart docker" >/dev/null
+minikube ssh "sudo mkdir -p /etc/docker && printf '%s\n' '{\"insecure-registries\":[\"${REGISTRY_HOST}:5000\"]}' | sudo tee /etc/docker/daemon.json >/dev/null && sudo systemctl restart docker" >/dev/null
 kubectl wait --for=condition=Ready node/minikube --timeout=180s >/dev/null
 
 PHASE="docker-registry"
-REGISTRY_URL="${MINIKUBE_IP}:5000"
+REGISTRY_URL="${REGISTRY_HOST}:5000"
 
 echo "Applying Terraform..."
 
@@ -102,7 +100,3 @@ echo "Grafana endpoint: [http://${MINIKUBE_IP}:30003]"
 echo "API endpoint: [http://${MINIKUBE_IP}:30080]"
 echo "Local registry: [${REGISTRY_URL}]"
 echo ""
-echo "Waiting for interrupt..."
-echo ""
-
-wait

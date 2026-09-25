@@ -16,8 +16,10 @@ jobs:
 
       - name: Discover Minikube endpoints
         run: |
+          REGISTRY_HOST="$(getent hosts host.minikube.internal | awk 'NR==1 { print $1 }')"
           MINIKUBE_IP="$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')"
-          echo "REGISTRY=${MINIKUBE_IP}:5000" >> "$GITHUB_ENV"
+          test -n "${REGISTRY_HOST}"
+          echo "REGISTRY=${REGISTRY_HOST}:5000" >> "$GITHUB_ENV"
           echo "API_ENDPOINT=http://${MINIKUBE_IP}:30080/weatherforecast" >> "$GITHUB_ENV"
 
       - name: Set up Docker Buildx

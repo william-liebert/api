@@ -3,6 +3,9 @@ controller:
 
 server:
   replicas: 1
+  service:
+    type: NodePort
+    nodePortHttp: 30002
 
 configs:
   params:
