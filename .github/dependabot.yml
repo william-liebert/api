@@ -11,6 +11,31 @@ updates:
       interval: "weekly"
 
   - package-ecosystem: "terraform"
-    directory: "/terraform"
+    directory: "/terraform/aws"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "terraform"
+    directory: "/terraform/aws/us-east-1"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "terraform"
+    directory: "/terraform/cicd"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "terraform"
+    directory: "/terraform/infra"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "terraform"
+    directory: "/terraform/local"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "terraform"
+    directory: "/terraform/wtech-api"
     schedule:
       interval: "weekly"
