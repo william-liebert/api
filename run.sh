@@ -16,6 +16,7 @@ require docker
 require git
 require kubectl
 require minikube
+require python3
 require terraform
 
 PHASE="minikube"
@@ -56,7 +57,9 @@ spec:
 EOF
 
 PHASE="minikube-registry-config"
-minikube ssh "sudo mkdir -p /etc/docker && printf '%s\n' '{\"insecure-registries\":[\"${MINIKUBE_IP}:${REGISTRY_PORT}\"]}' | sudo tee /etc/docker/daemon.json >/dev/null && sudo systemctl restart docker" >/dev/null
+CURRENT_DOCKER_CONFIG="$(minikube ssh "sudo cat /etc/docker/daemon.json 2>/dev/null || echo '{}'" | tr -d '\r')"
+UPDATED_DOCKER_CONFIG="$(printf '%s' "${CURRENT_DOCKER_CONFIG}" | python3 -c 'import json,sys; registry=sys.argv[1]; config=json.loads(sys.stdin.read() or "{}"); registries=config.get("insecure-registries", []); registries=[value for value in registries if value != registry]; registries.append(registry); config["insecure-registries"]=registries; print(json.dumps(config))' "${MINIKUBE_IP}:${REGISTRY_PORT}")"
+printf '%s\n' "${UPDATED_DOCKER_CONFIG}" | minikube ssh "sudo mkdir -p /etc/docker && sudo tee /etc/docker/daemon.json >/dev/null && sudo systemctl restart docker" >/dev/null
 kubectl wait --for=condition=Ready node/minikube --timeout=180s >/dev/null
 
 PHASE="docker-registry"
