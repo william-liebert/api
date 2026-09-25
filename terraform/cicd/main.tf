@@ -1,5 +1,5 @@
 module "gitea" {
-  source          = "./modules/gitea"
+  source = "./modules/gitea"
 
   gitea_admin_username = var.gitea_admin_username
 
@@ -9,7 +9,7 @@ module "gitea" {
 }
 
 module "argocd" {
-  source          = "./modules/argocd"
+  source = "./modules/argocd"
 
   depends_on = [
     module.helm,

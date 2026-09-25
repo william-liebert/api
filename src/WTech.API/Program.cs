@@ -14,7 +14,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 
 var summaries = new[]
 {

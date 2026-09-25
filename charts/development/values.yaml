@@ -1,5 +1,24 @@
 # Default values for development chart
 
+api:
+  replicaCount: 1
+  image:
+    repository: wtech-api
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: NodePort
+    port: 8080
+    targetPort: 8080
+    nodePort: 30080
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
 gitea:
   service:
     type: NodePort

@@ -1,3 +1,3 @@
 module "ministack" {
-  source          = "./modules/ministack"
+  source = "./modules/ministack"
 }
