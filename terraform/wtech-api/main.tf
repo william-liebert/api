@@ -7,6 +7,9 @@ resource "helm_release" "development" {
   replace        = true
 
   values = [
-    file("${path.module}/resources/values.yaml")
+    templatefile("${path.module}/resources/values.yaml", {
+      api_image_repository = var.api_image_repository
+      api_image_tag        = var.api_image_tag
+    })
   ]
 }

@@ -7,13 +7,18 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      REGISTRY: host.minikube.internal:5000
       IMAGE_NAME: wtech-api
       NAMESPACE: default
       RELEASE_NAME: development
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Discover Minikube endpoints
+        run: |
+          MINIKUBE_IP="$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')"
+          echo "REGISTRY=${MINIKUBE_IP}:5000" >> "$GITHUB_ENV"
+          echo "API_ENDPOINT=http://${MINIKUBE_IP}:30080/weatherforecast" >> "$GITHUB_ENV"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -41,4 +46,4 @@ jobs:
         run: |
           kubectl rollout status deployment/${RELEASE_NAME}-api --timeout=180s
           kubectl get svc ${RELEASE_NAME}-api -o wide
-          curl -fsS http://host.minikube.internal:30080/weatherforecast | head -c 200
+          curl -fsS "${API_ENDPOINT}" | head -c 200

@@ -4,7 +4,18 @@ variable "kubeconfig_path" {
 }
 
 variable "chart_repository_url" {
-  description = "URL of the local Gitea-hosted Helm chart repository"
+  description = "Path to the Helm chart used for the local bootstrap"
   type        = string
-  default     = "http://127.0.0.1:33000/git/wtech-api/charts/development"
+  default     = "../../charts/development"
+}
+
+variable "api_image_repository" {
+  description = "Registry-qualified API image repository for the bootstrap release"
+  type        = string
+}
+
+variable "api_image_tag" {
+  description = "API image tag for the bootstrap release"
+  type        = string
+  default     = "latest"
 }

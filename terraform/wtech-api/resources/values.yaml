@@ -1,8 +1,8 @@
 api:
   replicaCount: 1
   image:
-    repository: wtech-api
-    tag: latest
+    repository: ${api_image_repository}
+    tag: ${api_image_tag}
     pullPolicy: IfNotPresent
   service:
     type: NodePort
