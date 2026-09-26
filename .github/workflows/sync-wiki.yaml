@@ -1,0 +1,50 @@
+name: Sync GitHub Wiki
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - docs/wiki/**
+      - .github/workflows/sync-wiki.yaml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Sync docs/wiki to GitHub Wiki
+        env:
+          WIKI_TOKEN: ${{ secrets.WIKI_TOKEN }}
+          WIKI_URL: https://github.com/${{ github.repository }}.wiki.git
+        run: |
+          if [ -z "$WIKI_TOKEN" ]; then
+            echo "::error::Set the WIKI_TOKEN repository secret to a token with write access to the wiki."
+            exit 1
+          fi
+          if [ ! -d docs/wiki ]; then
+            echo "::error::The docs/wiki directory does not exist."
+            exit 1
+          fi
+
+          auth_header="$(printf 'x-access-token:%s' "$WIKI_TOKEN" | base64 -w 0)"
+          wiki_dir="$RUNNER_TEMP/wiki"
+          git -c http.extraheader="AUTHORIZATION: basic $auth_header" clone --depth=1 "$WIKI_URL" "$wiki_dir"
+          rsync -a --delete --exclude='.git/' docs/wiki/ "$wiki_dir/"
+
+          git -C "$wiki_dir" add --all
+          if git -C "$wiki_dir" diff --cached --quiet; then
+            echo "The GitHub Wiki is already up to date."
+            exit 0
+          fi
+
+          git -C "$wiki_dir" config user.name "github-actions[bot]"
+          git -C "$wiki_dir" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C "$wiki_dir" commit -m "Sync wiki from ${GITHUB_SHA}"
+          git -c http.extraheader="AUTHORIZATION: basic $auth_header" -C "$wiki_dir" push origin HEAD
