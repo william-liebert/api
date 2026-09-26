@@ -48,6 +48,15 @@ ADR 0002 documents the repository-wide C# style decision. For substantial
 technical decisions, consult `docs/adr/` and add an ADR when no existing record
 covers the decision.
 
+### Keep the wiki in sync
+
+Copilot instructions in `.github/copilot-instructions.md` require changes to
+application code, tests, scripts, workflows, Terraform, charts, manifests, and
+configuration to include updates to the relevant `docs/wiki/` pages in the same
+change. Update every affected page, including `Home.md` when the index or source
+map changes. Kubernetes-specific guidance is also in
+`.github/instructions/kubernetes.instructions.md`.
+
 ## AI-parsable reference
 
 ```yaml
@@ -71,6 +80,10 @@ test_status:
 style:
   config: .editorconfig
   decision_record: docs/adr/0002-adopt-csharp-editorconfig.md
+wiki_maintenance:
+  copilot_instructions: .github/copilot-instructions.md
+  rule: update_relevant_docs/wiki_pages_in_the_same_change_as_source_changes
+  kubernetes_instructions: .github/instructions/kubernetes.instructions.md
 adr_policy:
   directory: docs/adr/
   review_before_substantial_changes: true
