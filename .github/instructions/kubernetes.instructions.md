@@ -10,3 +10,4 @@ applyTo: "charts/**/*,**/*.yaml,**/*.yml"
 - Avoid embedding secrets or credentials directly in YAML files.
 - Keep resource definitions explicit and readable.
 - Validate with `kubectl apply --dry-run=client` or chart tooling if available.
+- Check `docs/adr/` for relevant decisions before changing manifests; add/update an ADR when a Kubernetes change introduces a significant new decision.

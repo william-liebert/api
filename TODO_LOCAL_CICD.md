@@ -43,6 +43,11 @@ Agents must inspect the current Terraform modules, chart templates, workflow
 files, and `run.sh` before changing them. Existing behavior is a baseline to
 understand, not proof that the bootstrap is correct.
 
+Agents must also check `docs/adr/` for existing decisions before implementation.
+If a work item requires a significant new architectural or process decision, add
+an ADR in `docs/adr/` so the rationale is preserved for future contributors and
+Copilot agents.
+
 ## Target architecture
 
 ```text

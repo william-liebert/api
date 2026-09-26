@@ -4,6 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
+## Architecture Decision Records (ADRs)
+
+- ADRs are stored in `docs/adr/`.
+- Before implementing substantial changes, review existing ADRs for relevant decisions and constraints.
+- If a meaningful technical decision is not yet documented, create a new ADR in `docs/adr/` and capture context, decision, and consequences.
+
 This is a modern .NET 8 web API project built with ASP.NET Core, containerized with Docker, and deployed to Kubernetes using Terraform and Minikube. The project includes:
 
 - A main API project (`src/WTech.API`) with basic weather forecast endpoints
