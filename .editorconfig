@@ -167,9 +167,9 @@ dotnet_naming_symbols.constants.applicable_kinds = field
 dotnet_naming_symbols.constants.applicable_accessibilities = *
 dotnet_naming_symbols.constants.required_modifiers = const
 
-# Analyzer severities (explicit IDs for consistent enforcement)
+# Analyzer severities (selected explicit IDs for consistent enforcement)
 
-# Ensure important quality diagnostics are strict
+# Selected explicit diagnostic severities
 dotnet_diagnostic.CA2000.severity = warning
 dotnet_diagnostic.CA2012.severity = warning
 dotnet_diagnostic.CA2201.severity = warning
