@@ -110,6 +110,9 @@ The configured options and approved values are:
 | `[*.{cs,csx}]` | `dotnet_naming_symbols.interface_symbols.required_modifiers` | `` |
 | `[*.{cs,csx}]` | `dotnet_naming_style.interface_style.required_prefix` | `I` |
 | `[*.{cs,csx}]` | `dotnet_naming_style.interface_style.capitalization` | `pascal_case` |
+| `[*.{cs,csx}]` | `dotnet_naming_rule.interfaces_should_be_pascal_case.severity` | `warning` |
+| `[*.{cs,csx}]` | `dotnet_naming_rule.interfaces_should_be_pascal_case.symbols` | `interface_symbols` |
+| `[*.{cs,csx}]` | `dotnet_naming_rule.interfaces_should_be_pascal_case.style` | `pascal_case_style` |
 | `[*.{cs,csx}]` | `dotnet_naming_rule.types_should_be_pascal_case.severity` | `warning` |
 | `[*.{cs,csx}]` | `dotnet_naming_rule.types_should_be_pascal_case.symbols` | `type_symbols` |
 | `[*.{cs,csx}]` | `dotnet_naming_rule.types_should_be_pascal_case.style` | `pascal_case_style` |

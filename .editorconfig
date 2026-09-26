@@ -134,6 +134,10 @@ dotnet_naming_symbols.interface_symbols.required_modifiers =
 dotnet_naming_style.interface_style.required_prefix = I
 dotnet_naming_style.interface_style.capitalization = pascal_case
 
+dotnet_naming_rule.interfaces_should_be_pascal_case.severity = warning
+dotnet_naming_rule.interfaces_should_be_pascal_case.symbols = interface_symbols
+dotnet_naming_rule.interfaces_should_be_pascal_case.style = pascal_case_style
+
 dotnet_naming_rule.types_should_be_pascal_case.severity = warning
 dotnet_naming_rule.types_should_be_pascal_case.symbols = type_symbols
 dotnet_naming_rule.types_should_be_pascal_case.style = pascal_case_style
