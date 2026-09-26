@@ -44,7 +44,8 @@ Do not apply cloud or local infrastructure just to validate an API-only change.
 ### C# conventions
 
 The root `.editorconfig` defines formatting, naming, and analyzer defaults.
-ADR 0002 documents the repository-wide C# style decision. For substantial
+ADR 0002 documents the repository-wide C# style decision. C#-specific Copilot
+guidance is in `.github/instructions/csharp.instructions.md`. For substantial
 technical decisions, consult `docs/adr/` and add an ADR when no existing record
 covers the decision.
 
@@ -55,7 +56,8 @@ application code, tests, scripts, workflows, Terraform, charts, manifests, and
 configuration to include updates to the relevant `docs/wiki/` pages in the same
 change. Update every affected page, including `Home.md` when the index or source
 map changes. Kubernetes-specific guidance is also in
-`.github/instructions/kubernetes.instructions.md`.
+`.github/instructions/kubernetes.instructions.md`; C#-specific guidance is in
+`.github/instructions/csharp.instructions.md`.
 
 ## AI-parsable reference
 
@@ -80,6 +82,7 @@ test_status:
 style:
   config: .editorconfig
   decision_record: docs/adr/0002-adopt-csharp-editorconfig.md
+  copilot_instructions: .github/instructions/csharp.instructions.md
 wiki_maintenance:
   copilot_instructions: .github/copilot-instructions.md
   rule: update_relevant_docs/wiki_pages_in_the_same_change_as_source_changes
