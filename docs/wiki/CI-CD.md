@@ -2,6 +2,7 @@
 
 ```mermaid
 flowchart TD
+    Issue["New GitHub issue"] --> Copilot["GitHub: assign Copilot coding agent"]
     Main["Push to main"] --> Tests["Gitea: restore, build, test"]
     Main --> Image["Gitea: build and push Docker image"]
     Main --> Deploy["Gitea: EKS deployment placeholders"]
@@ -12,9 +13,9 @@ flowchart TD
 ## Human-readable guide
 
 This repository contains local Gitea workflows under `.gitea/workflows/` and
-one GitHub workflow for Dependabot auto-merge. The intended local platform
-includes Gitea Actions, but `TODO_LOCAL_CICD.md` notes that runner registration
-is not automated.
+GitHub workflows for issue-to-Copilot assignment, Dependabot auto-merge, and wiki
+sync. The intended local platform includes Gitea Actions, but
+`TODO_LOCAL_CICD.md` notes that runner registration is not automated.
 
 ### Current workflows
 
@@ -31,6 +32,17 @@ is not automated.
   condition. It uses `pull_request_target` to grant write permissions and does
   not check out or run pull-request code. Repository Actions settings must allow
   workflows to create and approve pull requests.
+- **`.github/workflows/copilot-issue-agent.yaml`:** on each newly opened issue
+  in this repository, assigns the Copilot coding agent using GitHub's issue
+  assignment API. Copilot is instructed to make and propose a focused fix when
+  needed, or explain why no code change is appropriate. The workflow does not
+  check out or run issue content. It requires the repository's Copilot cloud
+  agent feature and a `COPILOT_TOKEN` secret containing a user-to-server token;
+  the default `GITHUB_TOKEN` cannot assign issues to Copilot. Configure a
+  fine-grained token with metadata read and actions, contents, issues, and pull
+  requests read/write access, or a classic token with `repo` scope. This runs
+  Copilot for every new issue, so repository owners should account for agent
+  usage and review all proposed changes.
 - **`.github/workflows/sync-wiki.yaml`:** on pushes to `main` that change
   `docs/wiki/` or the workflow itself, checks out the source and GitHub Wiki
   separately and mirrors the documentation, including deletions. It also
@@ -76,6 +88,21 @@ workflows:
       - only Dependabot PRs in william-liebert/api are eligible
       - do not check out or execute pull-request code
       - repository Actions settings must allow workflows to create and approve pull requests
+  - file: .github/workflows/copilot-issue-agent.yaml
+    platform: GitHub Actions
+    trigger: issues (opened)
+    behavior:
+      - assign the Copilot coding agent to each newly opened issue
+      - ask Copilot to open a pull request for a needed fix or explain/clarify issues that need no or more information
+    authentication: COPILOT_TOKEN repository secret (user-to-server token)
+    requirements:
+      - Copilot cloud agent enabled for the repository
+      - token with the documented issue-assignment permissions
+    permissions:
+      GITHUB_TOKEN: none
+    risks:
+      - agent usage is incurred for every new issue
+      - review proposed changes before merging
   - file: .github/workflows/sync-wiki.yaml
     platform: GitHub Actions
     trigger:
@@ -101,6 +128,7 @@ secrets. Update this page if workflow behavior or status changes.
 | Concern | Verify |
 | --- | --- |
 | Workflow platform | `.gitea/workflows/` versus `.github/workflows/` |
+| Copilot issue assignment | Configure `COPILOT_TOKEN` and enable Copilot cloud agent |
 | Wiki publishing | Source pages in `docs/wiki/`; workflow uses `GITHUB_TOKEN` |
 | Image publishing | Registry, tag, and configured secret names |
 | Deployment | Real deploy and health-check commands, not placeholders |
