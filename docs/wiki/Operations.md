@@ -1,5 +1,16 @@
 # Operations
 
+```mermaid
+flowchart TD
+    Start["Local issue"] --> Context["Confirm Docker, Minikube, and kubeconfig context"]
+    Context --> Status["Inspect pods, services, and events"]
+    Status --> Terraform["Inspect the relevant Terraform inputs and plan"]
+    Terraform --> Gaps["Check TODO_LOCAL_CICD.md for known gaps"]
+    Gaps --> Retry{"Need to rerun ./run.sh?"}
+    Retry -->|No| Done["Continue diagnosis"]
+    Retry -->|Yes| Warning["Back up needed data; run.sh deletes Minikube"]
+```
+
 ## Human-readable guide
 
 ### Access and service addresses

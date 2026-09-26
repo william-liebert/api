@@ -1,5 +1,14 @@
 # CI/CD
 
+```mermaid
+flowchart TD
+    Main["Push to main"] --> Tests["Gitea: restore, build, test"]
+    Main --> Image["Gitea: build and push Docker image"]
+    Main --> Deploy["Gitea: EKS deployment placeholders"]
+    Dependabot["Dependabot PR"] --> Merge["GitHub: approve and enable auto-merge"]
+    Wiki["Wiki source change"] --> Sync["GitHub: sync docs/wiki"]
+```
+
 ## Human-readable guide
 
 This repository contains local Gitea workflows under `.gitea/workflows/` and
