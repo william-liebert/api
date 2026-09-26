@@ -1,5 +1,17 @@
 # Architecture
 
+```mermaid
+flowchart LR
+    API["API source"] --> Image["Docker image"]
+    Image --> Minikube["Minikube image store"]
+    Local["terraform/local"] --> Minikube
+    Infra["terraform/infra"] --> Platform["Platform services"]
+    CICD["terraform/cicd"] --> Gitea["Gitea and Argo CD resources"]
+    App["terraform/wtech-api"] --> Chart["Development Helm chart"]
+    Chart --> Minikube
+    AWS["terraform/aws"] --> EKS["AWS EKS"]
+```
+
 ## Human-readable guide
 
 ### Components

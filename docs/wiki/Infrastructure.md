@@ -1,5 +1,14 @@
 # Infrastructure
 
+```mermaid
+flowchart LR
+    Local["terraform/local"] --> Ministack["Ministack"]
+    Infra["terraform/infra"] --> Services["Argo CD, Gitea, Actions, Prometheus"]
+    CICD["terraform/cicd"] --> Repo["Gitea repository and CICD resources"]
+    App["terraform/wtech-api"] --> Chart["Development Helm chart"]
+    AWS["terraform/aws"] --> EKS["AWS EKS"]
+```
+
 ## Human-readable guide
 
 Terraform is organized into independent working directories under `terraform/`.

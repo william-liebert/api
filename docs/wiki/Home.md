@@ -5,6 +5,16 @@ workflow, local platform, infrastructure, and current automation. The repository
 is the source of truth: when documentation and implementation differ, verify the
 linked files before taking action.
 
+```mermaid
+flowchart LR
+    API["ASP.NET Core API"] --> Image["Docker image"]
+    Image --> ImageStore["Minikube image store"]
+    Terraform["Local Terraform"] --> Local["Minikube cluster"]
+    Local --> Services["Platform services and Helm charts"]
+    AWS["AWS Terraform"] --> EKS["AWS EKS"]
+    Wiki["docs/wiki/"] --> Publish["GitHub Wiki sync"]
+```
+
 ## Browse the wiki
 
 - [[Architecture]] — system boundaries, deployment modes, and current limitations

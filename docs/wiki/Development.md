@@ -1,5 +1,13 @@
 # Development
 
+```mermaid
+flowchart LR
+    Source["API source"] --> Restore["dotnet restore"]
+    Restore --> Build["dotnet build"]
+    Build --> Run["dotnet run"]
+    Build --> Test["dotnet test (no test projects yet)"]
+```
+
 ## Human-readable guide
 
 ### Prerequisites

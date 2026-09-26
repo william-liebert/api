@@ -1,5 +1,19 @@
 # Local Environment
 
+```mermaid
+flowchart TD
+    Run["./run.sh"] --> Delete["Delete existing Minikube cluster"]
+    Delete --> Start["Start Minikube"]
+    Start --> Image["Load local API image"]
+    Image --> Local["Apply terraform/local"]
+    Local --> Secret["Read Argo CD secret"]
+    Secret --> Infra["Apply terraform/infra"]
+    Infra --> CICD["Apply terraform/cicd"]
+    CICD --> App["Apply terraform/wtech-api"]
+    App --> Push["Push all local branches to Gitea"]
+    Push --> Output["Print access details"]
+```
+
 ## Human-readable guide
 
 The intended local platform uses Minikube with Docker and Terraform. The main

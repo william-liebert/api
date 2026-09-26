@@ -1,5 +1,14 @@
 # API
 
+```mermaid
+flowchart LR
+    Request["HTTP request"] --> HTTPS["HTTPS redirection"]
+    HTTPS --> Route["GET /weatherforecast"]
+    Route --> Generate["Generate five random forecasts"]
+    Generate --> Response["JSON response"]
+    Dev["Development environment"] --> Swagger["Swagger UI"]
+```
+
 ## Human-readable guide
 
 The application is an ASP.NET Core minimal API in `src/WTech.API`. It currently
