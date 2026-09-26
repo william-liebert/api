@@ -1,0 +1,49 @@
+name: Sync GitHub Wiki
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - docs/wiki/**
+      - .github/workflows/sync-wiki.yaml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out documentation source
+        uses: actions/checkout@v4
+        with:
+          path: source
+
+      - name: Check out GitHub Wiki
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}.wiki
+          ref: master
+          path: wiki
+
+      - name: Mirror documentation to wiki
+        run: rsync -a --delete --exclude='.git/' source/docs/wiki/ wiki/
+
+      - name: Commit wiki changes
+        working-directory: wiki
+        run: |
+          git add --all
+          if git diff --cached --quiet; then
+            echo "The GitHub Wiki is already up to date."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Sync wiki from ${GITHUB_SHA}"
+
+      - name: Push wiki changes
+        working-directory: wiki
+        run: git push origin HEAD

@@ -73,6 +73,10 @@ This script starts Minikube, loads the app image, applies Terraform configuratio
 - Validate both the application and any infrastructure changes before merging.
 - Use `dotnet build` and `dotnet test` when changing .NET code.
 
+## GitHub Wiki
+
+Wiki pages are maintained in `docs/wiki/` and automatically mirrored to the GitHub Wiki when changes are pushed to `main`. Enable and initialize the repository's Wiki, and allow GitHub Actions to create and approve content changes in repository settings. The workflow uses the default `GITHUB_TOKEN` and can also be run manually from the Actions tab.
+
 ## Useful commands
 
 ```bash
