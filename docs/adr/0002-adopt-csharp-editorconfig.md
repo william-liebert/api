@@ -48,7 +48,7 @@ The configured options and approved values are:
 | `[*.{cs,csx}]` | `csharp_space_between_square_brackets` | `false` |
 | `[*.{cs,csx}]` | `csharp_preserve_single_line_blocks` | `true` |
 | `[*.{cs,csx}]` | `csharp_preserve_single_line_statements` | `false` |
-| `[*.{cs,csx}]` | `csharp_preferred_modifier_order` | `public,private,protected,internal,protected_internal,private_protected,file,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,required,volatile,async:suggestion` |
+| `[*.{cs,csx}]` | `csharp_preferred_modifier_order` | `public,protected,internal,private,protected_internal,private_protected,file,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,required,volatile,async:suggestion` |
 | `[*.{cs,csx}]` | `csharp_style_var_for_built_in_types` | `false:suggestion` |
 | `[*.{cs,csx}]` | `csharp_style_var_when_type_is_apparent` | `false:suggestion` |
 | `[*.{cs,csx}]` | `csharp_style_var_elsewhere` | `false:suggestion` |
