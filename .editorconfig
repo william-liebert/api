@@ -151,6 +151,7 @@ dotnet_naming_style.pascal_case_style.capitalization = pascal_case
 dotnet_naming_rule.private_fields_should_be_underscore_camel_case.severity = warning
 dotnet_naming_rule.private_fields_should_be_underscore_camel_case.symbols = private_fields
 dotnet_naming_rule.private_fields_should_be_underscore_camel_case.style = private_field_underscore_style
+dotnet_naming_rule.private_fields_should_be_underscore_camel_case.priority = 1
 
 dotnet_naming_symbols.private_fields.applicable_kinds = field
 dotnet_naming_symbols.private_fields.applicable_accessibilities = private
@@ -162,9 +163,10 @@ dotnet_naming_style.private_field_underscore_style.required_prefix = _
 dotnet_naming_rule.constants_should_be_pascal_case.severity = warning
 dotnet_naming_rule.constants_should_be_pascal_case.symbols = constants
 dotnet_naming_rule.constants_should_be_pascal_case.style = pascal_case_style
+dotnet_naming_rule.constants_should_be_pascal_case.priority = 2
 
 dotnet_naming_symbols.constants.applicable_kinds = field
-dotnet_naming_symbols.constants.applicable_accessibilities = public,internal,protected,protected_internal,private_protected
+dotnet_naming_symbols.constants.applicable_accessibilities = *
 dotnet_naming_symbols.constants.required_modifiers = const
 
 # Analyzer severities (selected explicit IDs for consistent enforcement)

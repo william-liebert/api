@@ -123,6 +123,7 @@ The configured options and approved values are:
 | `[*.{cs,csx}]` | `dotnet_naming_rule.private_fields_should_be_underscore_camel_case.severity` | `warning` |
 | `[*.{cs,csx}]` | `dotnet_naming_rule.private_fields_should_be_underscore_camel_case.symbols` | `private_fields` |
 | `[*.{cs,csx}]` | `dotnet_naming_rule.private_fields_should_be_underscore_camel_case.style` | `private_field_underscore_style` |
+| `[*.{cs,csx}]` | `dotnet_naming_rule.private_fields_should_be_underscore_camel_case.priority` | `1` |
 | `[*.{cs,csx}]` | `dotnet_naming_symbols.private_fields.applicable_kinds` | `field` |
 | `[*.{cs,csx}]` | `dotnet_naming_symbols.private_fields.applicable_accessibilities` | `private` |
 | `[*.{cs,csx}]` | `dotnet_naming_symbols.private_fields.required_modifiers` | `` |
@@ -131,8 +132,9 @@ The configured options and approved values are:
 | `[*.{cs,csx}]` | `dotnet_naming_rule.constants_should_be_pascal_case.severity` | `warning` |
 | `[*.{cs,csx}]` | `dotnet_naming_rule.constants_should_be_pascal_case.symbols` | `constants` |
 | `[*.{cs,csx}]` | `dotnet_naming_rule.constants_should_be_pascal_case.style` | `pascal_case_style` |
+| `[*.{cs,csx}]` | `dotnet_naming_rule.constants_should_be_pascal_case.priority` | `2` |
 | `[*.{cs,csx}]` | `dotnet_naming_symbols.constants.applicable_kinds` | `field` |
-| `[*.{cs,csx}]` | `dotnet_naming_symbols.constants.applicable_accessibilities` | `public,internal,protected,protected_internal,private_protected` |
+| `[*.{cs,csx}]` | `dotnet_naming_symbols.constants.applicable_accessibilities` | `*` |
 | `[*.{cs,csx}]` | `dotnet_naming_symbols.constants.required_modifiers` | `const` |
 | `[*.{cs,csx}]` | `dotnet_diagnostic.CA2000.severity` | `warning` |
 | `[*.{cs,csx}]` | `dotnet_diagnostic.CA2012.severity` | `warning` |
