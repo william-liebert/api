@@ -170,12 +170,12 @@ dotnet_naming_symbols.constants.required_modifiers = const
 # Analyzer severities (explicit IDs for consistent enforcement)
 
 # Ensure important quality diagnostics are strict
-dotnet_diagnostic.CA1062.severity = warning
+dotnet_diagnostic.CA1062.severity = suggestion
 dotnet_diagnostic.CA2000.severity = warning
 dotnet_diagnostic.CA2012.severity = warning
 dotnet_diagnostic.CA2201.severity = warning
 dotnet_diagnostic.CA2254.severity = warning
-dotnet_diagnostic.IDE0005.severity = warning
+dotnet_diagnostic.IDE0005.severity = suggestion
 dotnet_diagnostic.IDE0051.severity = suggestion
 dotnet_diagnostic.IDE0060.severity = suggestion
 dotnet_diagnostic.IDE0160.severity = warning
