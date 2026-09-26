@@ -116,7 +116,7 @@ The configured options and approved values are:
 | `[*.{cs,csx}]` | `dotnet_naming_rule.types_should_be_pascal_case.severity` | `warning` |
 | `[*.{cs,csx}]` | `dotnet_naming_rule.types_should_be_pascal_case.symbols` | `type_symbols` |
 | `[*.{cs,csx}]` | `dotnet_naming_rule.types_should_be_pascal_case.style` | `pascal_case_style` |
-| `[*.{cs,csx}]` | `dotnet_naming_symbols.type_symbols.applicable_kinds` | `class,struct,record,record_struct,enum,delegate` |
+| `[*.{cs,csx}]` | `dotnet_naming_symbols.type_symbols.applicable_kinds` | `class,struct,record,enum,delegate` |
 | `[*.{cs,csx}]` | `dotnet_naming_symbols.type_symbols.applicable_accessibilities` | `*` |
 | `[*.{cs,csx}]` | `dotnet_naming_symbols.type_symbols.required_modifiers` | `` |
 | `[*.{cs,csx}]` | `dotnet_naming_style.pascal_case_style.capitalization` | `pascal_case` |
