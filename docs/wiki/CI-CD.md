@@ -19,6 +19,11 @@ is not automated.
   commands. It is not a complete deployment pipeline.
 - **`.github/workflows/dependabot-auto-merge.yaml`:** enables squash auto-merge
   for Dependabot patch and minor updates, subject to its repository condition.
+- **`.github/workflows/sync-wiki.yaml`:** on pushes to `main` that change
+  `docs/wiki/` or the workflow itself, checks out the source and GitHub Wiki
+  separately and mirrors the documentation, including deletions. It also
+  supports manual dispatch and uses `GITHUB_TOKEN` with contents write
+  permission.
 
 Do not treat the local Gitea workflows as GitHub Actions workflows. Workflow
 secrets must be configured in the appropriate platform and must never be
@@ -53,9 +58,16 @@ workflows:
     platform: GitHub Actions
     trigger: pull_request
     behavior: auto-merge Dependabot patch and minor updates
+  - file: .github/workflows/sync-wiki.yaml
+    platform: GitHub Actions
+    trigger:
+      - push to main affecting docs/wiki/ or the workflow
+      - manual dispatch
+    behavior: mirror docs/wiki/ to the GitHub Wiki, including deletions
+    authentication: GITHUB_TOKEN
+    permission: contents write
 known_gaps:
   gitea_runner_registration: not_automated
-  wiki_publishing_workflow: not_present_in_current_repository
 ```
 
 ## Change checklist
@@ -71,6 +83,7 @@ secrets. Update this page if workflow behavior or status changes.
 | Concern | Verify |
 | --- | --- |
 | Workflow platform | `.gitea/workflows/` versus `.github/workflows/` |
+| Wiki publishing | Source pages in `docs/wiki/`; workflow uses `GITHUB_TOKEN` |
 | Image publishing | Registry, tag, and configured secret names |
 | Deployment | Real deploy and health-check commands, not placeholders |
 | Local runner | Registration and connectivity to the local Gitea instance |

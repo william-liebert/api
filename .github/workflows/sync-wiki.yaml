@@ -10,41 +10,40 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
+      - name: Check out documentation source
         uses: actions/checkout@v4
+        with:
+          path: source
 
-      - name: Sync docs/wiki to GitHub Wiki
-        env:
-          WIKI_TOKEN: ${{ secrets.WIKI_TOKEN }}
-          WIKI_URL: https://github.com/${{ github.repository }}.wiki.git
+      - name: Check out GitHub Wiki
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}.wiki
+          ref: master
+          path: wiki
+
+      - name: Mirror documentation to wiki
+        run: rsync -a --delete --exclude='.git/' source/docs/wiki/ wiki/
+
+      - name: Commit wiki changes
+        working-directory: wiki
         run: |
-          if [ -z "$WIKI_TOKEN" ]; then
-            echo "::error::Set the WIKI_TOKEN repository secret to a token with write access to the wiki."
-            exit 1
-          fi
-          if [ ! -d docs/wiki ]; then
-            echo "::error::The docs/wiki directory does not exist."
-            exit 1
-          fi
-
-          auth_header="$(printf 'x-access-token:%s' "$WIKI_TOKEN" | base64 -w 0)"
-          wiki_dir="$RUNNER_TEMP/wiki"
-          git -c http.extraheader="AUTHORIZATION: basic $auth_header" clone --depth=1 "$WIKI_URL" "$wiki_dir"
-          rsync -a --delete --exclude='.git/' docs/wiki/ "$wiki_dir/"
-
-          git -C "$wiki_dir" add --all
-          if git -C "$wiki_dir" diff --cached --quiet; then
+          git add --all
+          if git diff --cached --quiet; then
             echo "The GitHub Wiki is already up to date."
             exit 0
           fi
 
-          git -C "$wiki_dir" config user.name "github-actions[bot]"
-          git -C "$wiki_dir" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git -C "$wiki_dir" commit -m "Sync wiki from ${GITHUB_SHA}"
-          git -c http.extraheader="AUTHORIZATION: basic $auth_header" -C "$wiki_dir" push origin HEAD
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Sync wiki from ${GITHUB_SHA}"
+
+      - name: Push wiki changes
+        working-directory: wiki
+        run: git push origin HEAD

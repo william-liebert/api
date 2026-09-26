@@ -9,10 +9,10 @@ The repository needs a maintainable source for pages published in its GitHub Wik
 
 ## Decision
 
-Maintain wiki page files in `docs/wiki/` and use a GitHub Actions workflow to mirror that directory to the repository's GitHub Wiki on pushes to `main`. The workflow also supports manual dispatch. It uses a repository secret named `WIKI_TOKEN` because the default GitHub Actions token does not provide wiki write access.
+Maintain wiki page files in `docs/wiki/` and use a GitHub Actions workflow to mirror that directory to the repository's GitHub Wiki on pushes to `main`. The workflow also supports manual dispatch. Use `actions/checkout` to check out both the source repository and the wiki repository into separate directories, and authenticate with the default `GITHUB_TOKEN`.
 
 ## Consequences
 
 - Wiki page changes can be reviewed and versioned alongside the repository.
-- The repository's Wiki feature must be enabled and initialized, and `WIKI_TOKEN` must be configured with wiki write access.
+- The repository's Wiki feature must be enabled and initialized, and GitHub Actions must have permission to write repository contents.
 - The workflow mirrors the source directory, including deletions; edits made directly in the GitHub Wiki are overwritten or removed on the next sync.

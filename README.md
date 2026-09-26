@@ -75,7 +75,7 @@ This script starts Minikube, loads the app image, applies Terraform configuratio
 
 ## GitHub Wiki
 
-Wiki pages are maintained in `docs/wiki/` and automatically mirrored to the GitHub Wiki when changes are pushed to `main`. To enable syncing, enable and initialize the repository's Wiki, then add a repository secret named `WIKI_TOKEN` with write access to the wiki. The workflow can also be run manually from the Actions tab.
+Wiki pages are maintained in `docs/wiki/` and automatically mirrored to the GitHub Wiki when changes are pushed to `main`. Enable and initialize the repository's Wiki, and allow GitHub Actions to create and approve content changes in repository settings. The workflow uses the default `GITHUB_TOKEN` and can also be run manually from the Actions tab.
 
 ## Useful commands
 
