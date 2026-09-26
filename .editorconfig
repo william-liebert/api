@@ -43,7 +43,7 @@ csharp_space_between_square_brackets = false
 csharp_preserve_single_line_blocks = true
 csharp_preserve_single_line_statements = false
 
-csharp_preferred_modifier_order = public,private,protected,internal,file,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,required,volatile,async:suggestion
+csharp_preferred_modifier_order = public,private,protected,internal,protected_internal,private_protected,file,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,required,volatile,async:suggestion
 
 # var preferences
 csharp_style_var_for_built_in_types = false:suggestion
@@ -164,7 +164,7 @@ dotnet_naming_rule.constants_should_be_pascal_case.symbols = constants
 dotnet_naming_rule.constants_should_be_pascal_case.style = pascal_case_style
 
 dotnet_naming_symbols.constants.applicable_kinds = field
-dotnet_naming_symbols.constants.applicable_accessibilities = public,internal,protected,protected_internal,private_protected
+dotnet_naming_symbols.constants.applicable_accessibilities = *
 dotnet_naming_symbols.constants.required_modifiers = const
 
 # Analyzer severities (explicit IDs for consistent enforcement)

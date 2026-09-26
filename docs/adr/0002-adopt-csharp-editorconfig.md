@@ -48,7 +48,7 @@ The configured options and approved values are:
 | `[*.{cs,csx}]` | `csharp_space_between_square_brackets` | `false` |
 | `[*.{cs,csx}]` | `csharp_preserve_single_line_blocks` | `true` |
 | `[*.{cs,csx}]` | `csharp_preserve_single_line_statements` | `false` |
-| `[*.{cs,csx}]` | `csharp_preferred_modifier_order` | `public,private,protected,internal,file,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,required,volatile,async:suggestion` |
+| `[*.{cs,csx}]` | `csharp_preferred_modifier_order` | `public,private,protected,internal,protected_internal,private_protected,file,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,required,volatile,async:suggestion` |
 | `[*.{cs,csx}]` | `csharp_style_var_for_built_in_types` | `false:suggestion` |
 | `[*.{cs,csx}]` | `csharp_style_var_when_type_is_apparent` | `false:suggestion` |
 | `[*.{cs,csx}]` | `csharp_style_var_elsewhere` | `false:suggestion` |
@@ -132,7 +132,7 @@ The configured options and approved values are:
 | `[*.{cs,csx}]` | `dotnet_naming_rule.constants_should_be_pascal_case.symbols` | `constants` |
 | `[*.{cs,csx}]` | `dotnet_naming_rule.constants_should_be_pascal_case.style` | `pascal_case_style` |
 | `[*.{cs,csx}]` | `dotnet_naming_symbols.constants.applicable_kinds` | `field` |
-| `[*.{cs,csx}]` | `dotnet_naming_symbols.constants.applicable_accessibilities` | `public,internal,protected,protected_internal,private_protected` |
+| `[*.{cs,csx}]` | `dotnet_naming_symbols.constants.applicable_accessibilities` | `*` |
 | `[*.{cs,csx}]` | `dotnet_naming_symbols.constants.required_modifiers` | `const` |
 | `[*.{cs,csx}]` | `dotnet_diagnostic.CA1062.severity` | `warning` |
 | `[*.{cs,csx}]` | `dotnet_diagnostic.CA2000.severity` | `warning` |
