@@ -148,16 +148,16 @@ dotnet_naming_symbols.type_symbols.required_modifiers =
 
 dotnet_naming_style.pascal_case_style.capitalization = pascal_case
 
-dotnet_naming_rule.private_fields_should_be_camel_case.severity = warning
-dotnet_naming_rule.private_fields_should_be_camel_case.symbols = private_fields
-dotnet_naming_rule.private_fields_should_be_camel_case.style = private_field_style
+dotnet_naming_rule.private_fields_should_be_underscore_camel_case.severity = warning
+dotnet_naming_rule.private_fields_should_be_underscore_camel_case.symbols = private_fields
+dotnet_naming_rule.private_fields_should_be_underscore_camel_case.style = private_field_underscore_style
 
 dotnet_naming_symbols.private_fields.applicable_kinds = field
 dotnet_naming_symbols.private_fields.applicable_accessibilities = private
 dotnet_naming_symbols.private_fields.required_modifiers =
 
-dotnet_naming_style.private_field_style.capitalization = camel_case
-dotnet_naming_style.private_field_style.required_prefix = _
+dotnet_naming_style.private_field_underscore_style.capitalization = camel_case
+dotnet_naming_style.private_field_underscore_style.required_prefix = _
 
 dotnet_naming_rule.constants_should_be_pascal_case.severity = warning
 dotnet_naming_rule.constants_should_be_pascal_case.symbols = constants
