@@ -132,6 +132,7 @@ The configured options and approved values are:
 | `[*.{cs,csx}]` | `dotnet_naming_rule.constants_should_be_pascal_case.symbols` | `constants` |
 | `[*.{cs,csx}]` | `dotnet_naming_rule.constants_should_be_pascal_case.style` | `pascal_case_style` |
 | `[*.{cs,csx}]` | `dotnet_naming_symbols.constants.applicable_kinds` | `field` |
+| `[*.{cs,csx}]` | `dotnet_naming_symbols.constants.applicable_accessibilities` | `public,internal,protected,protected_internal,private_protected` |
 | `[*.{cs,csx}]` | `dotnet_naming_symbols.constants.required_modifiers` | `const` |
 | `[*.{cs,csx}]` | `dotnet_diagnostic.CA1062.severity` | `warning` |
 | `[*.{cs,csx}]` | `dotnet_diagnostic.CA2000.severity` | `warning` |
