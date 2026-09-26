@@ -63,7 +63,7 @@ The configured options and approved values are:
 | `[*.{cs,csx}]` | `csharp_style_inlined_variable_declaration` | `true:suggestion` |
 | `[*.{cs,csx}]` | `csharp_style_throw_expression` | `true:suggestion` |
 | `[*.{cs,csx}]` | `csharp_style_conditional_delegate_call` | `true:suggestion` |
-| `[*.{cs,csx}]` | `csharp_style_prefer_switch_expression` | `true:suggestion` |
+| `[*.{cs,csx}]` | `csharp_style_prefer_switch_expression_over_statement` | `true:suggestion` |
 | `[*.{cs,csx}]` | `csharp_style_prefer_primary_constructors` | `true:suggestion` |
 | `[*.{cs,csx}]` | `csharp_style_namespace_declarations` | `file_scoped:suggestion` |
 | `[*.{cs,csx}]` | `csharp_style_prefer_utf8_string_literals` | `true:suggestion` |
