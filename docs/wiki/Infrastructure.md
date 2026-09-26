@@ -96,5 +96,6 @@ when suitable tooling is available.
 | --- | --- |
 | Formatting | `terraform fmt -check -recursive` |
 | Root validation | `terraform -chdir=<root> validate` |
+| Terraform Copilot guidance | `.github/instructions/terraform.instructions.md` |
 | Kubernetes guidance | `.github/instructions/kubernetes.instructions.md` |
 | Decision records | `docs/adr/` |
