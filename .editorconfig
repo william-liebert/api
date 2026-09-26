@@ -11,7 +11,7 @@ trim_trailing_whitespace = true
 [*.md]
 trim_trailing_whitespace = false
 
-[*.{cs,csx,vb,vbx}]
+[*.{cs,csx}]
 indent_size = 4
 tab_width = 4
 
