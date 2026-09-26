@@ -134,7 +134,6 @@ The configured options and approved values are:
 | `[*.{cs,csx}]` | `dotnet_naming_symbols.constants.applicable_kinds` | `field` |
 | `[*.{cs,csx}]` | `dotnet_naming_symbols.constants.applicable_accessibilities` | `*` |
 | `[*.{cs,csx}]` | `dotnet_naming_symbols.constants.required_modifiers` | `const` |
-| `[*.{cs,csx}]` | `dotnet_diagnostic.CA1062.severity` | `suggestion` |
 | `[*.{cs,csx}]` | `dotnet_diagnostic.CA2000.severity` | `warning` |
 | `[*.{cs,csx}]` | `dotnet_diagnostic.CA2012.severity` | `warning` |
 | `[*.{cs,csx}]` | `dotnet_diagnostic.CA2201.severity` | `warning` |
