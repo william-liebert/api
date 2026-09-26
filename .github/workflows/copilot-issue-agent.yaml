@@ -5,7 +5,8 @@ name: Assign New Issues to Copilot
   issues:
     types: [opened]
 
-permissions: {}
+permissions:
+  issues: write
 
 jobs:
   assign-copilot:
@@ -14,16 +15,11 @@ jobs:
     steps:
       - name: Assign Copilot to the issue
         env:
-          GH_TOKEN: ${{ secrets.COPILOT_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           REPOSITORY: ${{ github.repository }}
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
         run: |
-          if [[ -z "$GH_TOKEN" ]]; then
-            echo "Configure the COPILOT_TOKEN repository secret." >&2
-            exit 1
-          fi
-
           jq -n \
             --arg repository "$REPOSITORY" \
             --arg branch "$DEFAULT_BRANCH" \
@@ -40,7 +36,7 @@ jobs:
                   "missing, ask a clarifying question instead of guessing."
                 ),
                 custom_agent: "",
-                model: ""
+                model: "GPT-6 Luna"
               }
             }' |
             gh api \

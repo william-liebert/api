@@ -37,10 +37,9 @@ sync. The intended local platform includes Gitea Actions, but
   assignment API. Copilot is instructed to make and propose a focused fix when
   needed, or explain why no code change is appropriate. The workflow does not
   check out or run issue content. It requires the repository's Copilot cloud
-  agent feature and a `COPILOT_TOKEN` secret containing a user-to-server token;
-  the default `GITHUB_TOKEN` cannot assign issues to Copilot. Configure a
-  fine-grained token with metadata read and actions, contents, issues, and pull
-  requests read/write access, or a classic token with `repo` scope. This runs
+  agent feature and grants the built-in `GITHUB_TOKEN` only `issues: write`.
+  It selects GPT-6 Luna, currently the lowest-priced supported model by
+  per-token pricing; model availability and pricing can change. This runs
   Copilot for every new issue, so repository owners should account for agent
   usage and review all proposed changes.
 - **`.github/workflows/sync-wiki.yaml`:** on pushes to `main` that change
@@ -94,12 +93,12 @@ workflows:
     behavior:
       - assign the Copilot coding agent to each newly opened issue
       - ask Copilot to open a pull request for a needed fix or explain/clarify issues that need no or more information
-    authentication: COPILOT_TOKEN repository secret (user-to-server token)
+    authentication: built-in GITHUB_TOKEN
     requirements:
       - Copilot cloud agent enabled for the repository
-      - token with the documented issue-assignment permissions
     permissions:
-      GITHUB_TOKEN: none
+      issues: write
+    model: GPT-6 Luna
     risks:
       - agent usage is incurred for every new issue
       - review proposed changes before merging
@@ -128,7 +127,7 @@ secrets. Update this page if workflow behavior or status changes.
 | Concern | Verify |
 | --- | --- |
 | Workflow platform | `.gitea/workflows/` versus `.github/workflows/` |
-| Copilot issue assignment | Configure `COPILOT_TOKEN` and enable Copilot cloud agent |
+| Copilot issue assignment | Enable Copilot cloud agent; workflow grants `issues: write` to `GITHUB_TOKEN` |
 | Wiki publishing | Source pages in `docs/wiki/`; workflow uses `GITHUB_TOKEN` |
 | Image publishing | Registry, tag, and configured secret names |
 | Deployment | Real deploy and health-check commands, not placeholders |
