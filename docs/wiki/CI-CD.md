@@ -41,7 +41,9 @@ sync. The intended local platform includes Gitea Actions, but
   It selects GPT-6 Luna, currently the lowest-priced supported model by
   per-token pricing; model availability and pricing can change. This runs
   Copilot for every new issue, so repository owners should account for agent
-  usage and review all proposed changes.
+  usage and review all proposed changes. GitHub's current API guidance describes
+  Copilot issue assignment as requiring a user-to-server token; verify that the
+  built-in token is accepted in this repository before relying on the workflow.
 - **`.github/workflows/sync-wiki.yaml`:** on pushes to `main` that change
   `docs/wiki/` or the workflow itself, checks out the source and GitHub Wiki
   separately and mirrors the documentation, including deletions. It also

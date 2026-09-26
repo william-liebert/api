@@ -23,5 +23,8 @@ Luna, currently the lowest-priced supported model by per-token pricing.
 - Newly opened issues are automatically sent to Copilot for investigation.
 - Repository owners must enable Copilot cloud agent. GitHub may change available
   models and their pricing over time.
+- GitHub's current API guidance describes Copilot issue assignment as requiring a
+  user-to-server token, so acceptance of the built-in Actions token must be
+  verified before relying on this automation.
 - Copilot usage may be incurred for every new issue, and its proposed changes
   require human review before merging.
