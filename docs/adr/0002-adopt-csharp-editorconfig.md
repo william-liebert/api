@@ -128,12 +128,6 @@ The configured options and approved values are:
 | `[*.{cs,csx}]` | `dotnet_naming_rule.constants_should_be_pascal_case.style` | `pascal_case_style` |
 | `[*.{cs,csx}]` | `dotnet_naming_symbols.constants.applicable_kinds` | `field` |
 | `[*.{cs,csx}]` | `dotnet_naming_symbols.constants.required_modifiers` | `const` |
-| `[*.{cs,csx}]` | `dotnet_analyzer_diagnostic.category-Style.severity` | `suggestion` |
-| `[*.{cs,csx}]` | `dotnet_analyzer_diagnostic.category-Reliability.severity` | `warning` |
-| `[*.{cs,csx}]` | `dotnet_analyzer_diagnostic.category-Design.severity` | `suggestion` |
-| `[*.{cs,csx}]` | `dotnet_analyzer_diagnostic.category-Documentation.severity` | `suggestion` |
-| `[*.{cs,csx}]` | `dotnet_analyzer_diagnostic.category-Performance.severity` | `warning` |
-| `[*.{cs,csx}]` | `dotnet_analyzer_diagnostic.category-Security.severity` | `warning` |
 | `[*.{cs,csx}]` | `dotnet_diagnostic.CA1062.severity` | `warning` |
 | `[*.{cs,csx}]` | `dotnet_diagnostic.CA2000.severity` | `warning` |
 | `[*.{cs,csx}]` | `dotnet_diagnostic.CA2012.severity` | `warning` |

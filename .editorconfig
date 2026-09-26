@@ -160,13 +160,7 @@ dotnet_naming_rule.constants_should_be_pascal_case.style = pascal_case_style
 dotnet_naming_symbols.constants.applicable_kinds = field
 dotnet_naming_symbols.constants.required_modifiers = const
 
-# Analyzer severities
-dotnet_analyzer_diagnostic.category-Style.severity = suggestion
-dotnet_analyzer_diagnostic.category-Reliability.severity = warning
-dotnet_analyzer_diagnostic.category-Design.severity = suggestion
-dotnet_analyzer_diagnostic.category-Documentation.severity = suggestion
-dotnet_analyzer_diagnostic.category-Performance.severity = warning
-dotnet_analyzer_diagnostic.category-Security.severity = warning
+# Analyzer severities (explicit IDs for consistent enforcement)
 
 # Ensure important quality diagnostics are strict
 dotnet_diagnostic.CA1062.severity = warning
