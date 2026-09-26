@@ -17,8 +17,11 @@ is not automated.
 - **`.gitea/workflows/deploy.yml`:** builds and pushes an image, configures AWS
   credentials, then contains placeholder EKS deployment and verification
   commands. It is not a complete deployment pipeline.
-- **`.github/workflows/dependabot-auto-merge.yaml`:** enables squash auto-merge
-  for Dependabot patch and minor updates, subject to its repository condition.
+- **`.github/workflows/dependabot-auto-merge.yaml`:** approves and enables squash
+  auto-merge for Dependabot patch and minor updates, subject to its repository
+  condition. It uses `pull_request_target` to grant write permissions and does
+  not check out or run pull-request code. Repository Actions settings must allow
+  workflows to create and approve pull requests.
 - **`.github/workflows/sync-wiki.yaml`:** on pushes to `main` that change
   `docs/wiki/` or the workflow itself, checks out the source and GitHub Wiki
   separately and mirrors the documentation, including deletions. It also
@@ -56,8 +59,14 @@ workflows:
     status: deployment_and_verification_are_placeholders
   - file: .github/workflows/dependabot-auto-merge.yaml
     platform: GitHub Actions
-    trigger: pull_request
-    behavior: auto-merge Dependabot patch and minor updates
+    trigger: pull_request_target (opened, synchronize, reopened)
+    behavior:
+      - approve Dependabot patch and minor updates
+      - enable squash auto-merge for those updates
+    security:
+      - only Dependabot PRs in william-liebert/api are eligible
+      - do not check out or execute pull-request code
+      - repository Actions settings must allow workflows to create and approve pull requests
   - file: .github/workflows/sync-wiki.yaml
     platform: GitHub Actions
     trigger:
